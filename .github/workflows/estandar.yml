@@ -61,6 +61,11 @@ jobs:
       - name: Self-test de check_skills_citadas
         run: python tools/check_skills_citadas.py --self-test
 
+      # El instalador escribe dentro de OTROS repos: si se rompe, el fallo aparece alla y el
+      # diagnostico se lee como "las skills no cargan", que no apunta a este archivo.
+      - name: Self-test de install_skills
+        run: python tools/install_skills.py --self-test
+
       # Los dos candados del reparto, sobre el reparto real. Sin esto solo frenan a quien
       # se acuerde de correrlos a mano, que es como se entrego el primer reparto sin skills.
       # El glob se expande explicitamente: si `repartos/*` llegara literal al script, el fallo se

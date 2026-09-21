@@ -15,9 +15,33 @@ Con 154 skills, leer el catálogo entero no sirve. El router sí.
 
 ## Cómo se usa
 
-Copiá o enlazá `.claude/skills/` dentro del repo donde estés trabajando. Claude Code las carga
-sola cuando la `description` matchea la tarea; también podés invocarlas por nombre. El paso a paso
-está en la plantilla de [prompt de tarea](docs/plantillas/reparto/NombreTarea.md), §1.
+Claude Code carga las skills desde el repo **donde se está trabajando**, no desde acá. Un estándar
+que vive sólo en este repositorio está escrito y no aplica a nada. Se instala:
+
+```bash
+python tools/install_skills.py ../AtlasBackend ../AtlasAdminPortal ../AtlasExternalProvidersMock
+python tools/install_skills.py --check ../AtlasBackend   # sale 1 si el destino quedó a la deriva
+```
+
+Queda un **espejo generado** —cada archivo lleva su aviso— y un manifiesto
+`.claude/estandar-instalado.json` con lo que este repositorio puso ahí. Ese manifiesto es lo que
+permite retirar después una skill que acá se elimine **sin tocar lo que el repo tenga de propio**:
+`AtlasBackend`, por ejemplo, tiene nueve skills suyas (`graphify`, `backend-hardening`…) que
+conviven con estas 154.
+
+Espejo y no symlink por el mismo motivo que documenta `sync_agents.py`: en Windows los enlaces piden
+privilegios y git los maneja distinto según la plataforma, y tres de las cuatro estaciones son
+Windows. Además el espejo viaja en el commit, así que la estación que clona recibe el estándar sin
+un paso manual que alguien pueda olvidar.
+
+El instalador **no toca `settings.json`** del destino —ahí viven los hooks propios de cada repo— ni
+arrastra `.claude/hooks/`: los candados de plan y reporte de este repositorio exigen `PLAN.md` y
+`REPORTE.md` en la raíz, y encenderlos de arrastre bloquearía cualquier edición en un repo de
+producción hasta que alguien los escriba. Eso se enciende a conciencia.
+
+Una vez instaladas, Claude Code las carga sola cuando la `description` matchea la tarea; también se
+las puede invocar por nombre. El paso a paso está en la plantilla de
+[prompt de tarea](docs/plantillas/reparto/NombreTarea.md), §1.
 
 Los **hechos de cada proyecto** (comandos reales, invariantes del modelo, prohibiciones, rutas)
 no viven acá: viven en el `CLAUDE.md` de ese repo, y **mandan sobre cualquier skill**. Cómo
