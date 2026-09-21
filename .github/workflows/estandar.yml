@@ -1,0 +1,87 @@
+# Candado de CI del estándar de la casa.
+#
+# Existe porque los hooks de `.claude/hooks/` solo corren dentro de Claude Code. Este workflow es
+# lo único que frena a quien edite `.claude/` sin sincronizar, o edite `.agents/` a mano — en
+# cualquier herramienta y en cualquier máquina.
+#
+# Prohibido agregar `continue-on-error` acá: un check obligatorio que no puede fallar no es un check.
+name: estandar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: estandar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  candados:
+    name: Espejo sin deriva y candados en verde
+    runs-on: ubuntu-latest
+    steps:
+      # Versiones verificadas contra la API el 2026-09-20, no de memoria:
+      # `gh api repos/actions/checkout/releases/latest`     -> v7.0.1
+      # `gh api repos/actions/setup-python/releases/latest` -> v7.0.0
+      # Las v4/v5 anteriores apuntaban a Node 20, deprecado: GitHub las forzaba a Node 24
+      # y avisaba en cada corrida.
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      # Detecta las dos derivas posibles: alguien editó `.claude/` sin sincronizar,
+      # o alguien editó el espejo `.agents/` a mano. Nombra el archivo exacto.
+      - name: Espejo .agents/ sin deriva
+        run: python tools/sync_agents.py --check
+
+      # Los candados son código de producción del equipo: si se rompen, dejan de bloquear
+      # sin que nadie se entere. Por eso corren sus propias pruebas en cada PR.
+      - name: Self-test de sync_agents
+        run: python tools/sync_agents.py --self-test
+
+      - name: Self-test de plan_gate
+        run: python .claude/hooks/plan_gate.py --self-test
+
+      - name: Self-test de report_gate
+        run: python .claude/hooks/report_gate.py --self-test
+
+      - name: Self-test de plan_status
+        run: python .claude/hooks/plan_status.py --self-test
+
+      - name: Self-test de check_reparto
+        run: python tools/check_reparto.py --self-test
+
+      - name: Self-test de check_skills_citadas
+        run: python tools/check_skills_citadas.py --self-test
+
+      # Los dos candados del reparto, sobre el reparto real. Sin esto solo frenan a quien
+      # se acuerde de correrlos a mano, que es como se entrego el primer reparto sin skills.
+      # El glob se expande explicitamente: si `repartos/*` llegara literal al script, el fallo se
+      # leeria como "no existe esa carpeta" en vez de como "no hay reparto". Un check que falla
+      # por el motivo equivocado hace perder una hora.
+      #
+      # Cero fechas NO es error aca: este repo arranco sin ningun reparto emitido. Lo que se
+      # verifica es cada fecha que exista. El dia que se emita el primero, este paso lo revisa
+      # sin tocar nada. Si en cambio se quiere exigir que siempre haya al menos uno, cambiar el
+      # `exit 0` por `exit 1` — pero eso deja el repo en rojo hasta el primer reparto.
+      - name: Estructura del reparto y seccion obligatoria de skills
+        shell: bash
+        run: |
+          shopt -s nullglob
+          fechas=(repartos/*/)
+          if [ ${#fechas[@]} -eq 0 ]; then
+            echo "::notice::todavia no hay ninguna carpeta de fecha bajo repartos/; nada que verificar"
+            exit 0
+          fi
+          echo "verificando ${#fechas[@]} fecha(s) de reparto"
+          python tools/check_reparto.py "${fechas[@]}"
+
+      - name: Ninguna skill citada que no exista
+        run: python tools/check_skills_citadas.py
