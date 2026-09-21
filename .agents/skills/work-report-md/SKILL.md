@@ -99,13 +99,13 @@ Recortar está bien. **Reescribir no.** Lo pegado tiene que ser texto que salió
 tu resumen. Importa la línea del veredicto, el conteo, y el error **completo** cuando falla.
 ❌ "Los tests pasaron correctamente." ✅ `Tests: 12 passed, 12 total`.
 
-**Datos sensibles.** Ninguna salida puede llevar datos reales de pacientes, secretos ni tokens.
+**Datos sensibles.** Ninguna salida puede llevar datos reales de clientes, secretos ni tokens.
 Enmascaralos y **declará que enmascaraste**: si no lo aclarás, quien lee no sabe si el sistema no
 los emitió o si vos los sacaste. Los archivos completos van en `evidencia/`, referenciados por ruta.
 
 ```text
 409 APPOINTMENT_OVERLAP profesional=<ID-ENMASCARADO> franja=10:00-10:30
-(paciente y documento enmascarados manualmente para este reporte)
+(nombre y documento enmascarados manualmente para este reporte)
 ```
 
 ## 6. "No cubierto" no es "Pendiente"
@@ -167,7 +167,7 @@ El reporte está terminado cuando podés mostrar todo esto:
 - [ ] Cada ítem de A MEDIAS tiene las cuatro respuestas, con "dónde quedó" indicando si compila.
 - [ ] El porcentaje coincide con `HECHO / total` calculado, y el peldaño declarado no es más
       fuerte que lo demostrado (ver `evidence-and-verification`).
-- [ ] Ninguna salida pegada tiene datos de pacientes, secretos ni tokens; lo enmascarado, declarado.
+- [ ] Ninguna salida pegada tiene datos de clientes, secretos ni tokens; lo enmascarado, declarado.
 - [ ] Existen "No cubierto", "Desvíos del plan", "Riesgos residuales" y "Decisiones y
       ambigüedades", con contenido o con "ninguna".
 

@@ -37,7 +37,7 @@ labels: ["tipo:bug", "estado:triage"]
 body:
   - type: markdown
     attributes:
-      value: "No pegues datos reales de pacientes ni credenciales."
+      value: "No pegues datos reales de clientes ni credenciales."
   - type: textarea
     id: repro
     attributes:
@@ -72,7 +72,7 @@ body:
 - Si un repo define sus propias plantillas, **no** hereda ninguna de las de la organización
   (`github-repo-standards`).
 - Plantillas mínimas de la casa: bug, feature/requisito, tarea técnica, carril.
-- Aviso de privacidad arriba de todo form: nunca datos clínicos ni personales reales
+- Aviso de privacidad arriba de todo form: nunca datos personales ni financieros reales
   (`data-privacy-sensitive`).
 
 ## 3. Labels como taxonomía

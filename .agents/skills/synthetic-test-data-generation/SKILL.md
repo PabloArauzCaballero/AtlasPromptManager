@@ -38,7 +38,7 @@ const nombre = faker.person.fullName();
 
 ## 2. Coherencia referencial y de negocio
 Los datos sueltos pasan validación de tipo pero rompen invariantes.
-- Generá el grafo, no filas aisladas: un `paciente` con sus `citas`, cada cita con un
+- Generá el grafo, no filas aisladas: un `cliente` con sus `solicitudes`, cada solicitud con un
   `profesional` y un `horario` que existan y no se solapen.
 - Respetá las FKs y las reglas: una cita no puede ser anterior a la fecha de alta; un asiento
   contable debe cuadrar débito = crédito; un `*_concept_id` debe existir en el catálogo.

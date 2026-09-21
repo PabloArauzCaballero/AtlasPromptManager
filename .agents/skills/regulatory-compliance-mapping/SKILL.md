@@ -1,6 +1,6 @@
 ---
 name: regulatory-compliance-mapping
-description: Método para bajar normativa de protección de datos y salud a controles de ingeniería verificables — identificar los marcos aplicables con el responsable legal, matriz requisito → control técnico → evidencia → dueño, privacidad por diseño y por defecto, evaluación de impacto, registro de tratamientos, gestión de brechas y revisión periódica. Usar al arrancar un producto o módulo que trate datos personales o clínicos, al recibir un requisito "de cumplimiento", al preparar una auditoría o evaluación de impacto, y al responder "¿esto cumple?" sin inventar la respuesta.
+description: Método para bajar normativa de protección de datos a controles de ingeniería verificables — identificar los marcos aplicables con el responsable legal, matriz requisito → control técnico → evidencia → dueño, privacidad por diseño y por defecto, evaluación de impacto, registro de tratamientos, gestión de brechas y revisión periódica. Usar al arrancar un producto o módulo que trate datos personales o financieros, al recibir un requisito "de cumplimiento", al preparar una auditoría o evaluación de impacto, y al responder "¿esto cumple?" sin inventar la respuesta.
 effort: high
 ---
 
@@ -32,9 +32,9 @@ No se puede mapear lo que no se conoce. Por cada flujo que toque datos personale
 
 | Campo | Ejemplo |
 |---|---|
-| Tratamiento | «Agenda de citas con especialidad» |
+| Tratamiento | «Evaluación de capacidad de pago» |
 | Finalidad | Prestación del servicio de salud |
-| Categorías de datos | Identificación, contacto, dato de salud (especialidad, motivo) |
+| Categorías de datos | Identificación, contacto, dato financiero (ingresos, deuda, score) |
 | Categorías de titulares | Pacientes, profesionales |
 | Origen | Titular; profesional; integración X |
 | Destinatarios | Profesional tratante, organización, proveedor de email |
@@ -56,7 +56,7 @@ técnica común.
 
 | REQ | Requisito (texto del responsable legal) | Control técnico | Dónde vive | Evidencia verificable | Dueño | Estado |
 |---|---|---|---|---|---|---|
-| R-07 | «Registrar todo acceso a datos clínicos» | Evento de auditoría en cada lectura | `audit-trail-history` | Query de eventos por paciente + test de integración | Backend | IMPLEMENTADO |
+| R-07 | «Registrar todo acceso a datos sensibles» | Evento de auditoría en cada lectura | `audit-trail-history` | Query de eventos por titular + test de integración | Backend | IMPLEMENTADO |
 | R-12 | «El titular puede revocar el consentimiento» | Revocación con efecto inmediato | `data-privacy-sensitive` | Test otorgar→leer→revocar→denegado | Backend | IMPLEMENTADO |
 | R-19 | «Notificar brechas en el plazo Z» | Runbook + detección | `incident-response-postmortem` | Simulacro con tiempos | SRE + Legal | PARCIAL |
 
@@ -81,7 +81,7 @@ No es un documento: es una lista de decisiones que se toman **antes** de escribi
 1. **Minimización**: ¿qué campo puedo no pedir? ¿qué endpoint puede devolver menos?
 2. **Por defecto lo más restrictivo**: visibilidad privada, notificaciones neutras, exportes
    desactivados, retención mínima; el usuario o el administrador amplían explícitamente.
-3. **Separación**: identificación separada de datos clínicos donde sea viable; seudonimización
+3. **Separación**: identificación separada de los datos financieros donde sea viable; seudonimización
    en analítica.
 4. **Transparencia técnica**: se puede responder «qué datos tenemos de esta persona, quién los vio
    y por qué» con una consulta, no con una investigación de dos semanas.
@@ -100,7 +100,7 @@ mínima, alineada con lo que exige GDPR art. 35(7) como referencia:
 1. Descripción sistemática del tratamiento y sus finalidades.
 2. Necesidad y proporcionalidad.
 3. Riesgos para las personas (no para la empresa): reidentificación, acceso indebido, pérdida,
-   discriminación, daño por error clínico.
+   discriminación, daño patrimonial por una decisión mal tomada.
 4. Medidas para mitigar cada riesgo → filas nuevas en la matriz de §3.
 
 El equipo técnico aporta 1, 3 y 4 con precisión; el responsable legal firma. Amenazas técnicas

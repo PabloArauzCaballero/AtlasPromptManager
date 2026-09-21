@@ -35,8 +35,8 @@ rompe en el primer caso no previsto. Ejemplo de la guía oficial: en vez de `NEV
 «la respuesta la va a leer un motor de texto a voz, así que no uses puntos suspensivos porque no
 sabe pronunciarlos».
 
-❌ `No devuelvas el documento completo del paciente.`
-✅ `Devolvé solo los campos que la vista muestra: el resto es dato clínico que esta pantalla no tiene por qué recibir, y cada campo extra es superficie de fuga.`
+❌ `No devuelvas el registro completo del cliente.`
+✅ `Devolvé solo los campos que la vista muestra: el resto es dato sensible que esta pantalla no tiene por qué recibir, y cada campo extra es superficie de fuga.`
 
 ## 3. Rol y contexto
 

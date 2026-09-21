@@ -7,9 +7,9 @@ effort: high
 
 # Multi-tenancy — gate de aislamiento
 
-Un tenant es la organización dueña de los datos (clínica, grupo médico, aseguradora). La falla
+Un tenant es la organización dueña de los datos (comercio, cadena, entidad financiera). La falla
 característica no es un crash: es **mostrarle a una organización los datos de otra**, en
-silencio. En salud eso es una brecha de datos clínicos. `authz-access-control` decide qué
+silencio. Acá eso es una brecha de datos financieros. `authz-access-control` decide qué
 puede hacer un actor *dentro* de su tenant; esta skill garantiza que nunca salga de él.
 
 ## 1. Elegir el modelo de aislamiento
@@ -123,8 +123,8 @@ tienen tenant. Se marcan con un decorador explícito (p. ej. `@TenantAgnostic()`
 - Nunca unas datos de dos tenants en una misma respuesta "porque el usuario pertenece a ambos",
   salvo vista diseñada para eso (p. ej. "mis organizaciones") con proyección mínima.
 - Membresía suspendida o revocada corta el acceso **en el próximo request**, no al expirar el token.
-- El paciente suele ser transversal a organizaciones: decidí explícitamente qué datos suyos son
-  del tenant (la historia en esa clínica) y cuáles de la persona (su perfil), según
+- El cliente suele ser transversal a organizaciones: decidí explícitamente qué datos suyos son
+  del tenant (su operación con ese comercio) y cuáles de la persona (su perfil), según
   `data-privacy-sensitive`.
 
 ## 9. Operación

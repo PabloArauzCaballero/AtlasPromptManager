@@ -49,7 +49,7 @@ if (file.mimetype === 'image/png') save(file);            // falsificable
 ## 3. Servir con autorización — URL firmada
 
 - El acceso a un archivo pasa por **tu** control de acceso, igual que cualquier recurso: quién
-  pide, tiene relación con ese recurso (`authz-access-control`, y para clínicos la relación de
+  pide, tiene relación con ese recurso (`authz-access-control`, y para el expediente la relación de
   atención + `data-privacy-sensitive`).
 - Dos patrones: (a) proxy — tu API valida y hace stream desde el storage; simple, pero carga tu
   API; (b) **URL prefirmada** de vida corta — tu API autoriza y devuelve una URL temporal al
@@ -66,7 +66,7 @@ if (file.mimetype === 'image/png') save(file);            // falsificable
   (`background-jobs-scheduling`), no en el request de subida. El request solo valida, guarda el
   original y encola.
 - Imágenes con `sharp`: `resize` con límites máximos, `toFormat`/`toBuffer` a un formato seguro,
-  descartando metadatos EXIF (que pueden traer geolocalización del paciente — privacidad).
+  descartando metadatos EXIF (que pueden traer la geolocalización de quien sacó la foto — privacidad).
 - Límites de dimensiones y de píxeles totales: una imagen "pequeña" en bytes puede ser
   gigapíxeles y agotar memoria (decompression bomb). Fijá topes.
 - Estado del medio: `uploaded → scanning → ready → failed`; la UI muestra "procesando"
@@ -84,13 +84,13 @@ if (file.mimetype === 'image/png') save(file);            // falsificable
 - Una radiografía, un PDF de laboratorio o una foto de una lesión son datos de salud: aplican
   **todas** las reglas de `data-privacy-sensitive` y `audit-trail-history` (inmutabilidad, auditoría de
   cada acceso, retención, borrado).
-- Registrá cada **lectura** de un adjunto clínico en el rastro de auditoría (`audit-trail-history`).
+- Registrá cada **lectura** de un adjunto sensible en el rastro de auditoría (`audit-trail-history`).
 - Datos de prueba: nunca subas archivos con datos personales reales a entornos de desarrollo (`test-data-management`).
 
 ## 7. Ciclo de vida
 
 - Borrado: al eliminar el recurso dueño, borrá (o marcá para borrar) el objeto; evitá huérfanos
-  que acumulan costo y riesgo. Para clínicos, seguí la política de retención, no borres a lo loco.
+  que acumulan costo y riesgo. Para el expediente, seguí la política de retención, no borres a lo loco.
 - Reconciliación periódica objeto ↔ metadato: objetos sin fila y filas sin objeto son bugs.
 - Cuotas por tenant/usuario para que el storage no crezca sin control.
 
@@ -100,7 +100,7 @@ Antes de declarar listo un endpoint de upload, pegá:
 - Prueba de que un archivo con extensión falsificada (`.png` que es un ejecutable) es **rechazado** por magic bytes.
 - Prueba de que un usuario sin relación con el recurso recibe 403 al pedir el archivo (y la URL firmada vencida ya no sirve).
 - Salida que muestre que el original se guardó con clave no adivinable en bucket privado y que el derivado se generó en background.
-- Para adjuntos clínicos: entrada de auditoría registrada en el acceso.
+- Para adjuntos sensibles: entrada de auditoría registrada en el acceso.
 
 ## Anti-patrones
 

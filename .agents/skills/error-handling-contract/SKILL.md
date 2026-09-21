@@ -1,6 +1,6 @@
 ---
 name: error-handling-contract
-description: Contrato de errores de la API — errores de dominio y su mapeo a HTTP (400, 401, 403, 404, 409, 412, 422, 428, 429, 5xx) con criterio, problem details (RFC 9457), códigos estables para el cliente, traducción de errores de base y ORM, exception filter único en NestJS, y nada de stack, SQL ni datos de pacientes en la respuesta. Usar al crear una excepción de dominio, decidir qué status devuelve un caso, escribir o revisar un exception filter, documentar errores en OpenAPI, o cuando el front no distingue dos fallos.
+description: Contrato de errores de la API — errores de dominio y su mapeo a HTTP (400, 401, 403, 404, 409, 412, 422, 428, 429, 5xx) con criterio, problem details (RFC 9457), códigos estables para el cliente, traducción de errores de base y ORM, exception filter único en NestJS, y nada de stack, SQL ni datos del titular en la respuesta. Usar al crear una excepción de dominio, decidir qué status devuelve un caso, escribir o revisar un exception filter, documentar errores en OpenAPI, o cuando el front no distingue dos fallos.
 ---
 
 # Contrato de errores
@@ -43,8 +43,8 @@ código, y dónde se traduce. El filtro de Nest en sí está en `nestjs-developm
 
 Reglas de desempate:
 
-- **403 vs 404 sobre recurso ajeno**: si revelar que existe es una fuga (historia clínica
-  de otro paciente, recurso de otro tenant), respondé **404**. Decidilo por tipo de
+- **403 vs 404 sobre recurso ajeno**: si revelar que existe es una fuga (el expediente
+  de otro cliente, recurso de otro tenant), respondé **404**. Decidilo por tipo de
   recurso y sé consistente (ver `authz-access-control`).
 - **400 vs 422**: ¿un validador de esquema lo detecta sin conocer el negocio? → 400. ¿Hace
   falta estado o una regla del dominio? → 422. Elegí la convención de validación de DTO
@@ -85,7 +85,7 @@ estándar: `type`, `title`, `status`, `detail`, `instance`. Extensiones de la ca
 - Stack trace, nombre de clase interna, ruta de archivo, versión de librería.
 - SQL, nombre de tabla/constraint, mensaje crudo del driver (`duplicate key value
   violates unique constraint "uq_…"`).
-- **PII**: documento, nombre de paciente, diagnóstico, email de un tercero. Ni en
+- **PII**: documento, nombre del titular, monto, email de un tercero. Ni en
   `detail` ni en el log del error (ver `data-privacy-sensitive`). Referí por id opaco.
 - Pistas de enumeración: "el email existe pero la contraseña es incorrecta" → mensaje
   único para login y recuperación (ver `authn-identity`).

@@ -69,7 +69,7 @@ Las imágenes suelen ser el mayor peso de una página y golpean el LCP (ver `fro
   anuncie el lector). No pongas "imagen de …" en el alt.
 
 ```html
-<img src="doctor.avif" width="96" height="96"
+<img src="perfil.avif" width="96" height="96"
      alt="Foto de perfil de la Dra. Salinas" loading="lazy">
 ```
 

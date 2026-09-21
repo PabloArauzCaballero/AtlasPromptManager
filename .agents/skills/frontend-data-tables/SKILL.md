@@ -1,6 +1,6 @@
 ---
 name: frontend-data-tables
-description: Diseño e implementación de tablas de datos en la web — densidad legible, orden/filtro/paginación por cursor, columnas responsivas (qué se colapsa o pasa a tarjeta en móvil), selección y acciones masivas, estados por tabla (carga, vacío, error), virtualización de listas grandes y accesibilidad de tabla. Usar al construir cualquier listado tabular (agenda, solicitudes, pacientes, movimientos), al hacerlo responsivo, o al revisar una tabla lenta, ilegible o inutilizable en móvil.
+description: Diseño e implementación de tablas de datos en la web — densidad legible, orden/filtro/paginación por cursor, columnas responsivas (qué se colapsa o pasa a tarjeta en móvil), selección y acciones masivas, estados por tabla (carga, vacío, error), virtualización de listas grandes y accesibilidad de tabla. Usar al construir cualquier listado tabular (solicitudes, clientes, comercios, movimientos), al hacerlo responsivo, o al revisar una tabla lenta, ilegible o inutilizable en móvil.
 ---
 
 # Tablas de datos
@@ -33,7 +33,7 @@ Una tabla ancha no cabe en móvil. Elegí una estrategia explícita, no dejes sc
 | Estrategia | Cuándo |
 |---|---|
 | Colapsar columnas secundarias | Hay 2-3 columnas clave y el resto es detalle |
-| Fila → tarjeta (label: valor) | Cada fila es una entidad rica (un paciente, una solicitud) |
+| Fila → tarjeta (label: valor) | Cada fila es una entidad rica (un cliente, una solicitud) |
 | Scroll horizontal con 1ª columna fija | Comparación entre muchas columnas numéricas |
 
 ## 4. Selección y acciones masivas

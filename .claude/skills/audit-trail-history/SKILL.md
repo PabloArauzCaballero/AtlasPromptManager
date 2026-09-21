@@ -1,6 +1,6 @@
 ---
 name: audit-trail-history
-description: Diseño de rastro de auditoría e historial de registros — quién, qué, cuándo, desde dónde y por qué; almacenamiento append-only e inalterable; qué eventos auditar (incluidas las LECTURAS de datos sensibles); historial de versiones de un registro; triggers vs aplicación; qué no guardar en el log; retención y consulta eficiente. Usar al diseñar una tabla de auditoría, al agregar un endpoint que lee o muta datos clínicos, financieros o de permisos, al implementar "ver historial de cambios", o al revisar si una acción sensible deja rastro.
+description: Diseño de rastro de auditoría e historial de registros — quién, qué, cuándo, desde dónde y por qué; almacenamiento append-only e inalterable; qué eventos auditar (incluidas las LECTURAS de datos sensibles); historial de versiones de un registro; triggers vs aplicación; qué no guardar en el log; retención y consulta eficiente. Usar al diseñar una tabla de auditoría, al agregar un endpoint que lee o muta datos de identidad, financieros o de permisos, al implementar "ver historial de cambios", o al revisar si una acción sensible deja rastro.
 ---
 
 # Rastro de auditoría e historial
@@ -37,7 +37,7 @@ Cada evento de auditoría responde, sin joins frágiles:
 1. **Lecturas de datos sensibles**, no solo escrituras: abrir un expediente, ver un
    documento, buscar a una persona, exportar o imprimir. En salud, "quién vio" importa tanto
    como "quién cambió".
-2. Toda mutación de datos clínicos, financieros, de identidad y de consentimiento.
+2. Toda mutación de datos financieros, de identidad, de permisos y de consentimiento.
 3. Autenticación y sesión: login, fallo, cierre, cambio de credenciales, MFA (`authn-identity`).
 4. Cambios de autorización: roles, permisos, membresías, accesos delegados (`authz-access-control`).
 5. Acciones administrativas y de soporte, incluida la suplantación ("ver como").
@@ -136,7 +136,7 @@ requests.
 
 - "Auditoría" como columnas `updated_by`/`updated_at` en la fila: solo recuerda al último.
 - Log de auditoría mutable "para corregir errores".
-- Volcar el JSON completo del paciente en cada evento.
+- Volcar el JSON completo del cliente en cada evento.
 - Auditar solo escrituras en un sistema donde el riesgo principal es la curiosidad indebida.
 - Timestamp o actor tomados del payload del cliente.
 - Auditoría escrita en un `catch` que se traga su propio fallo: si no se pudo auditar una acción

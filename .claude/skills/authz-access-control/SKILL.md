@@ -20,7 +20,7 @@ Authorization (BFLA). Son tres chequeos distintos y los tres son obligatorios.
 | # | Pregunta | Falla si se omite |
 |---|---|---|
 | 1 | ¿El actor está autenticado? | acceso anónimo |
-| 2 | ¿Su rol puede ejecutar **esta función**? | BFLA — un paciente invoca un endpoint de admin |
+| 2 | ¿Su rol puede ejecutar **esta función**? | BFLA — un cliente invoca un endpoint de admin |
 | 3 | ¿Puede operar sobre **este objeto**? | BOLA/IDOR — cambia el `:id` y ve lo ajeno |
 | 4 | ¿Puede leer/escribir **estos campos**? | mass assignment / fuga de propiedades |
 
@@ -55,12 +55,12 @@ if (!policy) throw new ForbiddenException();
   por la base de código o derivar permisos del nombre del rol.
 - **Ownership**: el recurso es del actor (su perfil, sus citas, sus publicaciones).
 - **Relación** (ReBAC): el actor tiene un vínculo vigente con el dueño — el profesional que
-  **atiende** a ese paciente, el miembro de esa organización, el titular del seguro. La
+  **lleva** ese caso, el miembro de esa organización, el titular de la cuenta. La
   relación tiene vigencia y alcance: se verifica contra datos, no contra el rol.
 - **Atributos/contexto**: estado del recurso, consentimiento vigente, horario, tenant.
 - En salud la regla típica combina todo: *rol profesional* **y** *relación de atención vigente*
   **y** *base legal que cubre ese dato* (ver `data-privacy-sensitive`). El rol solo no alcanza:
-  ser médico no da acceso a todos los pacientes.
+  ser analista no da acceso a todos los clientes.
 
 ## 4. Chequeo a nivel de objeto (BOLA/IDOR)
 
@@ -70,11 +70,11 @@ if (!policy) throw new ForbiddenException();
    una ventana donde el objeto ajeno ya está cargado.
 3. Los **listados y búsquedas** también son acceso a objetos: el filtro por actor/relación va en
    la query, no en un `.filter()` posterior (rompe la paginación y filtra de más al log).
-4. Recurso ajeno ⇒ **404**, no 403, cuando la sola existencia es información (¿este paciente
-   tiene historia en esta clínica?). 403 cuando el actor ya sabe legítimamente que existe.
+4. Recurso ajeno ⇒ **404**, no 403, cuando la sola existencia es información (¿esta persona
+   tiene una solicitud en curso?). 403 cuando el actor ya sabe legítimamente que existe.
 5. IDs no adivinables (UUID) **no son autorización**: reducen enumeración, no reemplazan el chequeo.
 6. El identificador del actor sale del token/sesión; **nunca** de un campo del body o un header
-   que el cliente controla (`userId`, `doctorId`, `X-User`).
+   que el cliente controla (`userId`, `comercioId`, `X-User`).
 
 ```ts
 // ❌ autenticado ≠ autorizado sobre ESTA cita
@@ -144,7 +144,7 @@ Por endpoint que toca datos de alguien, como mínimo:
 1. Sin credencial → 401.
 2. Rol sin permiso de función → 403.
 3. **Mismo rol, otro dueño** (usuario B pide el recurso de A) → 404/403. Es el test de IDOR.
-4. Relación inexistente o vencida (profesional que no atiende a ese paciente) → 404/403.
+4. Relación inexistente o vencida (analista que no lleva ese caso) → 404/403.
 5. Body con campos prohibidos (`role`, `ownerId`, `tenantId`) → 400, y verificar que **no** persistió.
 6. Listado: el usuario B no ve ningún registro de A, ni en `total`/contadores.
 7. Hijo de otro padre: `/a/:idA/b/:idDeOtroPadre` → 404.
@@ -157,7 +157,7 @@ Van en la suite de API con base real (`api-testing`, `integrity-testing`); un gu
 - `findOne(id)` seguido de un `if` que alguien olvidará en el próximo endpoint.
 - `if (user.role === 'admin')` disperso; roles nuevos creados ad hoc desde un carril.
 - Devolver la entidad completa y "que el front muestre lo que necesite".
-- Aceptar `userId`/`tenantId` del body. 403 que confirma la existencia de un registro clínico.
+- Aceptar `userId`/`tenantId` del body. 403 que confirma la existencia de un expediente ajeno.
 
 ## Evidencia / Definition of Done
 

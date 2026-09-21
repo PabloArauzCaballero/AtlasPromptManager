@@ -20,10 +20,10 @@ convirtiendo el pedido en criterios observables; recién ahí se planifica. Comp
 Cada requisito se expresa como uno o más criterios en formato **dado-cuando-entonces**:
 
 ```
-DADO   un doctor con agenda publicada
-CUANDO bloquea la franja 10:00–11:00 del martes
-ENTONCES esa franja deja de aparecer como disponible para nuevas solicitudes
-Y       las solicitudes ya aceptadas en esa franja no se alteran
+DADO   un comercio con una tarifa vigente desde el 1 de mayo
+CUANDO el operador publica una tarifa nueva desde el 1 de junio
+ENTONCES la tarifa anterior deja de aplicarse a partir del 1 de junio
+Y       los cobros ya liquidados con la tarifa anterior no se alteran
 ```
 
 - Cada criterio es booleano: se cumple o no, sin interpretación.

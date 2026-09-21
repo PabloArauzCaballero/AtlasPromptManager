@@ -12,31 +12,31 @@ URL estable por recurso, y metadatos que describan la página.
 ## 1. HTML indexable: SSR o prerender
 
 - El contenido debe estar en el HTML de la primera respuesta, no aparecer recién tras hidratar.
-  Serví las rutas públicas con SSR o prerenderizadas (`RenderMode.Prerender`/`Server`; ver
-  el modo de render que corresponda). Una landing de marketing se sirve estática por defecto.
-- Nada de contenido crítico detrás de una interacción o de un `@defer` que el crawler no dispara.
+  Serví las rutas públicas renderizadas en el servidor o prerenderizadas. Una landing de
+  marketing se sirve estática por defecto.
+- Nada de contenido crítico detrás de una interacción o de una carga diferida que el crawler no dispara.
 - Un `<h1>` por página, jerarquía de headings coherente, enlaces `<a href>` reales (no `click`).
 
 ## 2. Título y meta por ruta
 
 Cada ruta setea su propio `<title>` y `<meta name="description">` con el contenido real de esa
-página (nombre del profesional, especialidad, ciudad), no un texto genérico del sitio. En
-Angular, usá los servicios `Title` y `Meta` en un resolver o en el componente.
+página (nombre del comercio, rubro, ciudad), no un texto genérico del sitio. En Next.js eso es
+el `metadata` (o `generateMetadata`) de la ruta; el framework del repo fija el mecanismo exacto.
 
-```typescript
-private title = inject(Title);
-private meta = inject(Meta);
-
-setSeo(p: Profile) {
-  this.title.setTitle(`${p.fullName} — ${p.specialty} en ${p.city}`);
-  this.meta.updateTag({ name: 'description', content: p.summary.slice(0, 155) });
+```tsx
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const c = await getComercio(params.slug);
+  return {
+    title: `${c.nombre} — ${c.rubro} en ${c.ciudad}`,
+    description: c.resumen.slice(0, 155),
+  };
 }
 ```
 
 ## 3. Datos estructurados (JSON-LD)
 
-Agregá schema.org en JSON-LD para que el buscador entienda la entidad (p.ej. `Physician`,
-`MedicalOrganization`, `BreadcrumbList`). El JSON-LD debe reflejar lo que se ve en la página;
+Agregá schema.org en JSON-LD para que el buscador entienda la entidad (p. ej. `LocalBusiness`,
+`Organization`, `BreadcrumbList`). El JSON-LD debe reflejar lo que se ve en la página;
 no marques datos falsos o no visibles.
 
 ```html

@@ -1,6 +1,6 @@
 ---
 name: notifications-delivery
-description: Entrega de notificaciones multicanal desde la API NestJS — in-app, email y push — con idempotencia y deduplicación, plantillas, preferencias y opt-out por usuario, canal según urgencia, rate limiting anti-avalancha, registro de envío y entrega, y nada de datos clínicos en el cuerpo. Usar al agregar un recordatorio, un correo transaccional o una notificación push; al elegir por qué canal sale un evento; o al diagnosticar notificaciones que llegan a quien optó por no recibirlas o por el canal equivocado. Duplicados o pérdidas porque falló la transacción o el consumidor: `async-messaging-events`.
+description: Entrega de notificaciones multicanal desde la API NestJS — in-app, email y push — con idempotencia y deduplicación, plantillas, preferencias y opt-out por usuario, canal según urgencia, rate limiting anti-avalancha, registro de envío y entrega, y nada de datos sensibles en el cuerpo. Usar al agregar un recordatorio, un correo transaccional o una notificación push; al elegir por qué canal sale un evento; o al diagnosticar notificaciones que llegan a quien optó por no recibirlas o por el canal equivocado. Duplicados o pérdidas porque falló la transacción o el consumidor: `async-messaging-events`.
 ---
 
 # Entrega de notificaciones
@@ -90,12 +90,12 @@ recordatorio dos veces.
 - Tope de intentos + dead-letter con alerta (`async-messaging-events`). Una notificación que
   nunca llegó y nadie lo supo es peor que un error visible.
 
-## 7. Privacidad — el cuerpo no lleva datos clínicos
+## 7. Privacidad — el cuerpo no lleva datos sensibles
 
 Regla dura (`data-privacy-sensitive`): el contenido de una notificación puede aparecer en una pantalla
 bloqueada, en un preview de email, en logs del proveedor y en su retención.
 
-- ❌ "Tu resultado de VIH está listo" / "Cita con el Dr. X por [diagnóstico]".
+- ❌ "Tu crédito de Bs 12.000 fue aprobado" / "Rechazado por sobreendeudamiento".
 - ✅ "Tenés una actualización en tu ficha. Ingresá para verla." + deep-link autenticado.
 - Nada de datos sensibles ni tokens en asunto, cuerpo, URL o `data` del push.
 - El detalle vive detrás de login; la notificación solo avisa y linkea.
@@ -117,7 +117,7 @@ bloqueada, en un preview de email, en logs del proveedor y en su retención.
 - Consumí webhooks de entrega/rebote del proveedor para pasar de `sent` a `delivered`/`bounced`.
 - Métricas: enviadas/entregadas/fallidas por canal y tipo, tasa de rebote, latencia
   evento→entrega, tamaño de DLQ (`backend-observability`).
-- El registro es también auditoría de "se le avisó al paciente" — puede tener valor legal.
+- El registro es también auditoría de "se le avisó al cliente" — puede tener valor legal.
 
 ## Anti-patrones
 

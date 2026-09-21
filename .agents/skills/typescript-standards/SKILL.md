@@ -1,6 +1,6 @@
 ---
 name: typescript-standards
-description: Estándar de TypeScript de la casa — `strict` completo, `unknown` en vez de `any`, uniones discriminadas con exhaustividad por `never`, tipos de marca para IDs, `satisfies`, inmutabilidad, validación en runtime en los bordes, trampas de ESM vs CJS en Node y Jest, y tipos para dinero y fechas. Usar al escribir o revisar código TypeScript (API NestJS o web Angular), configurar un `tsconfig`, tipar un DTO o respuesta externa, o cuando aparece un `any`, un `as` o un `!` para callar al compilador.
+description: Estándar de TypeScript de la casa — `strict` completo, `unknown` en vez de `any`, uniones discriminadas con exhaustividad por `never`, tipos de marca para IDs, `satisfies`, inmutabilidad, validación en runtime en los bordes, trampas de ESM vs CJS en Node y Jest, y tipos para dinero y fechas. Usar al escribir o revisar código TypeScript (API NestJS, portal Next.js o app móvil), configurar un `tsconfig`, tipar un DTO o respuesta externa, o cuando aparece un `any`, un `as` o un `!` para callar al compilador.
 ---
 
 # TypeScript — estándar de la casa

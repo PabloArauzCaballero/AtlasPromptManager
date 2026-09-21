@@ -1,11 +1,11 @@
 ---
 name: component-architecture-solid
-description: Cómo el diseño de un componente de UI Angular encarna SOLID — una responsabilidad por componente (SRP), extensible por inputs/slots/composición sin editarlo (OCP), variantes que respetan el contrato base (LSP), inputs mínimos y cerrados en vez de un mega-componente (ISP) y dependencia de abstracciones inyectadas (DIP). Usar al diseñar un componente, al revisar uno que creció con demasiados inputs o un `@switch` de negocio, o al decidir si partirlo, extenderlo por projection o inyectarle una dependencia.
+description: Cómo el diseño de un componente de UI encarna SOLID — una responsabilidad por componente (SRP), extensible por props/slots/composición sin editarlo (OCP), variantes que respetan el contrato base (LSP), props mínimas y cerradas en vez de un mega-componente (ISP) y dependencia de abstracciones en vez de del transporte (DIP). Usar al diseñar un componente, al revisar uno que creció con demasiadas props o un `switch` de negocio, o al decidir si partirlo, extenderlo por composición o pasarle su fuente de datos desde afuera.
 ---
 
 # Arquitectura de componentes con SOLID
 
-SOLID no es solo para clases de backend: un componente Angular **es** una clase con un
+SOLID no es solo para clases de backend: un componente **es** una unidad con un
 contrato público (inputs/outputs/slots). Los mismos cinco principios deciden si ese
 contrato envejece bien o se pudre. Este es el nivel de diseño; el nivel de nombres y
 funciones lo cubre `clean-code`, el catálogo de principios puros `solid-principles`, y la
@@ -28,49 +28,45 @@ Un componente hace **una** cosa. Señales de que hace más de una: mezcla traer 
 pintarlos; tiene un bloque de presentación y otro de lógica de negocio; el nombre lleva
 "y" ("tarjeta-y-editor"); el archivo pasa de ~150 líneas de template sin ser una página.
 
-```ts
+```tsx
 // ❌ el mismo componente trae datos, filtra, pagina y pinta
-@Component({ selector: 'app-patient-list' })
-export class PatientList {
-  private readonly api = inject(PatientApi);
-  readonly patients = signal<Patient[]>([]);
-  // ...fetch, filtro, orden, paginado Y markup de la tabla
+export function ListaDeClientes() {
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  useEffect(() => { fetch('/api/clientes').then(/* ... */); }, []);
+  // ...filtro, orden, paginado Y markup de la tabla
 }
 ```
-```ts
+```tsx
 // ✅ contenedor orquesta; presentacional pinta
-@Component({ selector: 'app-patient-list-page' })          // smart
-export class PatientListPage {
-  private readonly api = inject(PatientApi);
-  protected readonly patients = this.api.list;             // resource/httpResource
+export function PaginaDeClientes() {                    // contenedor
+  const { data, isLoading } = useClientes();            // la consulta vive acá
+  return <TablaDeClientes filas={data ?? []} cargando={isLoading} onOrdenar={...} />;
 }
-// template: <app-patient-table [rows]="patients.value()" (sort)="..."/>  // dumb
+
+export function TablaDeClientes({ filas, cargando, onOrdenar }: Props) { /* solo pinta */ }
 ```
 
 ## 2. OCP — abierto a extensión, cerrado a modificación
 
 Un componente estable (un átomo del design system, un organismo reusado) se **extiende sin
-tocarlo**. Las tres palancas de extensión en Angular:
+tocarlo**. Las tres palancas de extensión:
 
-- **Inputs de variante** (unión cerrada): `tone`, `size`, `layout`.
-- **Content projection**: `<ng-content>` con `select` para slots; el consumidor inyecta
-  contenido sin que el componente sepa qué.
-- **Plantillas configurables**: `contentChild(TemplateRef)` + `NgTemplateOutlet` para
-  piezas como una celda custom de tabla.
+- **Props de variante** (unión cerrada): `tone`, `size`, `layout`.
+- **Composición por slots**: `children` y props que reciben nodos (`header`, `footer`); el
+  consumidor inyecta contenido sin que el componente sepa qué.
+- **Render props**: una función que el consumidor pasa para piezas como la celda custom de una
+  tabla (`renderCelda={(fila) => …}`).
 
-```ts
-// ❌ cada caso nuevo edita el componente: crece un @switch infinito
-readonly kind = input<'doctor' | 'clinic' | 'insurer' | 'pharmacy' | ...>();
-// template: @switch (kind()) { @case ('doctor') {...} @case ('clinic') {...} ... }
+```tsx
+// ❌ cada caso nuevo edita el componente: crece un switch infinito
+type Props = { kind: 'cliente' | 'comercio' | 'banco' | 'proveedor' | ... };
+// dentro: switch (kind) { case 'cliente': … case 'comercio': … }
 ```
-```ts
-// ✅ cerrado a modificación: el consumidor proyecta su cuerpo
-@Component({
-  selector: 'app-entity-card',
-  template: `<article><header><ng-content select="[card-title]"/></header>
-             <ng-content/></article>`,
-})
-export class EntityCard {}
+```tsx
+// ✅ cerrado a modificación: el consumidor compone el cuerpo
+export function TarjetaDeEntidad({ titulo, children }: { titulo: ReactNode; children: ReactNode }) {
+  return <article><header>{titulo}</header>{children}</article>;
+}
 ```
 
 Regla: si agregar un caso de uso obliga a editar un componente compartido, OCP está roto.
@@ -83,56 +79,54 @@ Toda variante de un componente debe ser usable donde se espera el componente, si
 sorpresas. Un `size="sm"` no puede dejar de emitir el output que emite `size="md"`; un
 `variant="ghost"` de botón sigue siendo enfocable y activable por teclado.
 
-- No condiciones el contrato a un input: `(picked)` se emite en **todas** las variantes o
-  en ninguna. Un output que aparece y desaparece según otro input es una trampa.
+- No condiciones el contrato a una prop: `onPick` se llama en **todas** las variantes o en
+  ninguna. Un callback que aparece y desaparece según otra prop es una trampa.
 - Nada de "esta prop solo funciona si esa otra vale X" sin que el tipo lo exprese. Si dos
-  inputs son mutuamente excluyentes, modelalos como una sola unión discriminada.
-- Preferí **composición a herencia** de componentes: extender una clase de componente para
-  cambiar comportamiento suele violar LSP. Componé átomos, no heredes organismos
+  props son mutuamente excluyentes, modelalas como una sola unión discriminada.
+- Preferí **composición a envoltorios que reimplementan**: envolver un componente para cambiarle
+  el comportamiento por dentro suele violar LSP. Componé átomos, no reescribas organismos
   (`solid-principles` desarrolla composición sobre herencia).
 
-## 4. ISP — inputs mínimos y cohesivos
+## 4. ISP — props mínimas y cohesivas
 
-Nadie debería depender de inputs que no usa. Un componente con 20 inputs opcionales obliga
-a cada consumidor a entender los 20 y multiplica los estados imposibles.
+Nadie debería depender de props que no usa. Un componente con 20 props opcionales obliga
+a cada consumidor a entender las 20 y multiplica los estados imposibles.
 
-```ts
-// ❌ mega-input: banderas sueltas, combinaciones inválidas posibles
-readonly showHeader = input(false); readonly showFooter = input(false);
-readonly compact = input(false); readonly bordered = input(false);
-readonly elevated = input(false); readonly danger = input(false); // ...
+```tsx
+// ❌ mega-props: banderas sueltas, combinaciones inválidas posibles
+type Props = { showHeader?: boolean; showFooter?: boolean; compact?: boolean;
+               bordered?: boolean; elevated?: boolean; danger?: boolean; /* ... */ };
 ```
-```ts
+```tsx
 // ✅ agrupá lo que viaja junto; cerrá las variantes
-readonly variant = input<'flat' | 'bordered' | 'elevated'>('flat');
-readonly tone = input<'neutral' | 'danger'>('neutral');
-// slots para header/footer en vez de banderas: <ng-content select="[card-header]"/>
+type Props = {
+  variant?: 'flat' | 'bordered' | 'elevated';
+  tone?: 'neutral' | 'danger';
+  header?: ReactNode;      // slot, en vez de una bandera showHeader
+  children: ReactNode;
+};
 ```
 
-Síntoma de ISP roto: más de ~6 inputs, banderas booleanas que eligen apariencia (eso es una
-variante), o combinaciones de inputs que no tienen sentido juntas. Partí el componente o
-agrupá los inputs relacionados en un objeto/variante.
+Síntoma de ISP roto: más de ~6 props, banderas booleanas que eligen apariencia (eso es una
+variante), o combinaciones de props que no tienen sentido juntas. Partí el componente o
+agrupá las props relacionadas en un objeto/variante.
 
 ## 5. DIP — depender de abstracciones, no de concretos
 
-Cuando un componente **necesita** una dependencia (un contenedor que trae datos), que
-dependa de una **abstracción inyectada**, no de una implementación concreta. Así se testea
-con un doble y se cambia la fuente sin tocar el componente.
+Cuando un componente **necesita** una dependencia (un contenedor que trae datos), que dependa de
+una **abstracción**, no de una implementación concreta. Así se testea con un doble y se cambia la
+fuente sin tocar el componente.
 
-```ts
-// ❌ acoplado a la implementación concreta y a HttpClient
-export class AppointmentsPage {
-  private readonly http = inject(HttpClient);
-  load() { return this.http.get('/api/appointments'); } // URL y transporte adentro
+```tsx
+// ❌ acoplado al transporte: URL, headers y forma de la respuesta adentro del componente
+export function PaginaDeSolicitudes() {
+  useEffect(() => { fetch('/api/solicitudes').then(r => r.json()).then(setDatos); }, []);
 }
 ```
-```ts
-// ✅ depende de un puerto; la implementación se provee por DI
-export abstract class AppointmentsGateway { abstract list(): Observable<Appointment[]>; }
-
-@Component({ /* ... */ })
-export class AppointmentsPage {
-  private readonly gateway = inject(AppointmentsGateway);  // abstracción
+```tsx
+// ✅ depende de un puerto: un hook o un cliente tipado que se puede sustituir en el test
+export function PaginaDeSolicitudes({ useSolicitudes = useSolicitudesDelServidor }: Props) {
+  const { data } = useSolicitudes();
 }
 ```
 
@@ -144,10 +138,10 @@ reciben todo por props. DIP aplica sobre todo a los contenedores.
 | Síntoma | Principio | Movida |
 |---|---|---|
 | Trae datos y además pinta | SRP | Partir en contenedor (smart) + presentacional (dumb) |
-| Un `@switch` por caso de negocio crece con cada feature | OCP | Content projection / TemplateRef |
-| Un output existe solo con cierto input | LSP | Contrato uniforme o unión discriminada |
-| Más de ~6 inputs, banderas de apariencia | ISP | Variantes cerradas, agrupar, partir |
-| Inyecta `HttpClient`/servicio concreto en algo reusable | DIP | Puerto inyectado, o subir la dependencia al contenedor |
+| Un `switch` por caso de negocio crece con cada feature | OCP | Composición por slots / render prop |
+| Un callback existe solo con cierta prop | LSP | Contrato uniforme o unión discriminada |
+| Más de ~6 props, banderas de apariencia | ISP | Variantes cerradas, agrupar, partir |
+| Hace `fetch` o usa un cliente concreto en algo reusable | DIP | Puerto inyectado, o subir la dependencia al contenedor |
 | Se hereda una clase de componente para variar | LSP/OCP | Composición de átomos |
 
 ## Anti-patrones

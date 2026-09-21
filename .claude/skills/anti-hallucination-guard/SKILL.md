@@ -83,7 +83,7 @@ Si lo pedido es inviable o mucho más caro, **decilo y proponé**; no entregues 
 
 ## 6. Datos: nada ficticio presentado como real
 
-- Si el requisito exige datos reales (instituciones, especialidades, medicamentos, aseguradoras, divisiones administrativas), no generes valores plausibles. Requerí fuente y registrá procedencia (ver `seed-data-catalogs`).
+- Si el requisito exige datos reales (bancos, monedas, rubros de comercio, divisiones administrativas, plan de cuentas), no generes valores plausibles. Requerí fuente y registrá procedencia (ver `seed-data-catalogs`).
 - No infieras reglas de negocio con consecuencia económica o regulatoria: tasas, plazos, comisiones,
   umbrales de riesgo, catálogos de estados. Se confirman contra el código o con quien las define.
 - Los datos de prueba se rotulan como tales y no se mezclan con catálogos.

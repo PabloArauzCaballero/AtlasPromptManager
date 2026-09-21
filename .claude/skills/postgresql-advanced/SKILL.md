@@ -56,8 +56,8 @@ CREATE EXTENSION IF NOT EXISTS unaccent;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE FUNCTION f_norm(text) RETURNS text LANGUAGE sql IMMUTABLE PARALLEL SAFE
   AS $$ SELECT lower(public.unaccent('public.unaccent', $1)) $$;
-CREATE INDEX doctor_name_trgm ON doctor USING gin (f_norm(full_name) gin_trgm_ops);
--- query: WHERE f_norm(full_name) LIKE '%' || f_norm($1) || '%'
+CREATE INDEX comercio_nombre_trgm ON comercio USING gin (f_norm(nombre) gin_trgm_ops);
+-- query: WHERE f_norm(nombre) LIKE '%' || f_norm($1) || '%'
 ```
 
 - **Full-text** (documentos, publicaciones): columna `tsvector` generada + GIN, consulta con
@@ -65,18 +65,18 @@ CREATE INDEX doctor_name_trgm ON doctor USING gin (f_norm(full_name) gin_trgm_op
   idioma a propósito.
 - Siempre con `LIMIT` y orden determinista. Ver `search-and-filtering`.
 
-## 4. Exclusion constraints: agenda sin solapamientos
+## 4. Exclusion constraints: vigencias sin solapamientos
 
-La invariante "un profesional no tiene dos turnos superpuestos" **no se garantiza en la
+La invariante "un comercio no tiene dos tarifas vigentes a la vez" **no se garantiza en la
 aplicación** (dos requests concurrentes pasan ambos el chequeo). Va en la base:
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS btree_gist;          -- necesaria para mezclar = con &&
-ALTER TABLE appointment ADD CONSTRAINT appointment_no_overlap
+ALTER TABLE tarifa ADD CONSTRAINT tarifa_sin_solape
   EXCLUDE USING gist (
-    doctor_id WITH =,
-    tstzrange(starts_at, ends_at, '[)') WITH &&     -- '[)' : turnos contiguos no chocan
-  ) WHERE (status <> 'cancelled');
+    comercio_id WITH =,
+    tstzrange(vigente_desde, vigente_hasta, '[)') WITH &&  -- '[)' : vigencias contiguas no chocan
+  ) WHERE (estado <> 'anulada');
 ```
 
 - La violación llega como SQLSTATE **`23P01`** (`exclusion_violation`): mapeala a 409

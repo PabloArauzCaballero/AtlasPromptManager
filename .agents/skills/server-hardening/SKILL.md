@@ -8,7 +8,7 @@ effort: high
 # Hardening del servidor
 
 Un server con Coolify expone: el panel (que puede desplegar código arbitrario), el proxy, SSH y
-Docker. Si el server aloja datos clínicos, esto es un control de `data-privacy-sensitive`, no un
+Docker. Si el server aloja datos personales, esto es un control de `data-privacy-sensitive`, no un
 extra. Complementa a `security-guardrails` (aplicación) y `coolify-operations` (plataforma).
 Comandos orientativos para Debian/Ubuntu; adaptá a tu distribución y registrala en el
 CLAUDE.md del proyecto de infraestructura.
@@ -79,7 +79,7 @@ acceder solo por dominio/proxy — asegurate de tener otra vía antes, o te bloq
 
 ## 6. Separación de entornos
 
-- Producción y staging en **servers distintos** cuando alojás datos clínicos; como mínimo,
+- Producción y staging en **servers distintos** cuando alojás datos personales; como mínimo,
   environments distintos, credenciales distintas y ninguna red compartida.
 - Previews de PR nunca en el server de producción.
 - Build server separado si los builds compiten con el tráfico.

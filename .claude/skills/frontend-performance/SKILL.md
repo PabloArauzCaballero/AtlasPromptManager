@@ -52,22 +52,19 @@ Percentil 75 de cargas reales (móvil + escritorio), no el mejor caso en tu lapt
   siguiente de un wizard), no para todo — prefetch indiscriminado compite por ancho
   de banda con lo que sí es crítico ahora.
 
-```ts
-// ❌ ruta con import estático: todo entra al bundle inicial
-{ path: 'reports', component: ReportsPage }
+```tsx
+// ❌ import estático de un componente pesado: entra al bundle de la ruta aunque casi nadie lo abra
+import { GraficoPesado } from './grafico-pesado';
 
-// ✅ Angular: la ruta carga su código recién al activarse
-{ path: 'reports', loadComponent: () => import('./reports/reports-page') }
+// ✅ se carga recién cuando hace falta, con su propio placeholder
+const GraficoPesado = dynamic(() => import('./grafico-pesado'), {
+  loading: () => <div className="chart-skeleton" />,
+  ssr: false,   // solo si de verdad depende del navegador
+});
 ```
 
-```html
-<!-- ✅ Angular: bloque pesado dentro de una vista, diferido hasta que entra al viewport -->
-@defer (on viewport) {
-  <app-heavy-chart [data]="series()" />
-} @placeholder {
-  <div class="chart-skeleton"></div>
-}
-```
+El mismo criterio vale para lo que no es un componente: una librería de gráficos, un editor o un
+lector de PDF se importan con `import()` dentro del handler que los usa, no arriba del archivo.
 
 El `@placeholder` reserva el mismo tamaño que el contenido final para no mover CLS.
 El detalle de rutas lazy y de su interacción con SSR lo fija el framework del repo; el
@@ -94,29 +91,26 @@ equivalente portable es el `import()` dinámico.
 | Streaming SSR | Página con partes lentas (datos de terceros, queries pesadas) — mandar el shell ya, ir completando por partes |
 | CSR puro | Apps muy interactivas detrás de login, donde SEO y LCP inicial importan poco frente a la interacción |
 
-- Hidratación: hidratar de más es JS que bloquea INP sin necesidad. En Angular usá
-  hidratación incremental (`@defer` con triggers `hydrate on …`) para que solo lo
-  interactivo pague su costo, y elegí el modo de render por ruta. En sitios mayormente
-  estáticos (landing), islas de interactividad.
+- Hidratación: hidratar de más es JS que bloquea INP sin necesidad. Mantené interactivo solo lo
+  que lo necesita —componentes de servidor donde el framework los ofrece, carga diferida— y elegí
+  el modo de render por ruta. En sitios mayormente estáticos (landing), islas de interactividad.
 
 ## 6. Caché
 
 - HTTP cache con `Cache-Control` correcto por tipo de recurso: assets con hash en el
   nombre → cacheo largo e inmutable; HTML/datos que cambian → `no-cache`/revalidación.
 - CDN para assets estáticos siempre que el proyecto lo tenga disponible.
-- Cache en cliente para datos que no cambian por request: un servicio de datos con el
-  estado en signals que sobrevive al desmontaje del componente, en vez de refetch en cada
-  montaje (una caché de datos del cliente). Bajo SSR, el transfer
-  cache de `HttpClient` evita repetir en el navegador el GET que ya hizo el servidor.
+- Cache en cliente para datos que no cambian por request: una caché de datos que sobrevive al
+  desmontaje del componente, en vez de refetch en cada montaje. Bajo SSR, pasá al cliente el
+  estado que el servidor ya trajo, en vez de repetir el GET en el navegador.
 
 ## 7. Virtualización de listas
 
 - Listas largas (cientas o miles de filas) renderizan solo lo que entra en el viewport
   + un margen, no el DOM completo — reduce trabajo de layout/paint y memoria.
-- Usá una librería de virtualización probada (en Angular, el scrolling del CDK
-  `@angular/cdk/scrolling` — el CDK es comportamiento sin estilos, no es Material — o
-  `@tanstack/virtual`; verificá la API en la doc oficial) en vez de reimplementarla; el cálculo de posiciones con
-  alturas variables tiene más casos límite de los que parece.
+- Usá una librería de virtualización probada (`@tanstack/virtual` o equivalente; verificá la API
+  en la doc oficial de la versión instalada) en vez de reimplementarla: el cálculo de posiciones
+  con alturas variables tiene más casos límite de los que parece.
 - No virtualices listas cortas (decenas de ítems) — la complejidad no se paga sola.
 
 ## 8. Evitar layout thrashing

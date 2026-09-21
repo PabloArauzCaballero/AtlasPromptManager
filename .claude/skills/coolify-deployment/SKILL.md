@@ -1,6 +1,6 @@
 ---
 name: coolify-deployment
-description: Despliegue en Coolify self-hosted — servers/projects/environments, elección de build pack (Nixpacks, Railpack, Static, Dockerfile, Compose) para API NestJS, Angular SSR y Astro, GitHub App vs deploy key, auto-deploy, previews por PR, dominios con TLS, puertos, healthchecks, variables build vs runtime, rolling updates y rollback. Usar al crear o reconfigurar un recurso en Coolify, al conectar un repo, o cuando el deploy queda verde pero el dominio no responde.
+description: Despliegue en Coolify self-hosted — servers/projects/environments, elección de build pack (Nixpacks, Railpack, Static, Dockerfile, Compose) para API NestJS y portales Next.js, GitHub App vs deploy key, auto-deploy, previews por PR, dominios con TLS, puertos, healthchecks, variables build vs runtime, rolling updates y rollback. Usar al crear o reconfigurar un recurso en Coolify, al conectar un repo, o cuando el deploy queda verde pero el dominio no responde.
 ---
 
 # Despliegue en Coolify
@@ -33,12 +33,12 @@ cuando el repo debe definir la imagen o la topología explícitamente.
 | App | Build pack | Motivo |
 |---|---|---|
 | API NestJS (yarn 4, ESM) | **Dockerfile** | Control de Corepack, prod-only deps, usuario no root, `HEALTHCHECK`. Nixpacks funciona pero adivina. |
-| Angular SSR | **Dockerfile** | Es un **proceso Node** (`node dist/<app>/server/server.mjs`), no un sitio estático. Static pack lo rompería. |
-| Landing Astro (output estático) | **Static** (o Nixpacks) | Sin server; publish directory = salida del build (`dist/` por defecto en Astro). Si usás adapter SSR, tratala como Node. |
+| Portal Next.js | **Dockerfile** | Es un **proceso Node** (`node server.js` del output `standalone`), no un sitio estático. Static pack lo rompería. |
+| Landing estática (export) | **Static** (o Nixpacks) | Sin server; publish directory = salida del build. Si la landing hace SSR, tratala como Node. |
 | API + worker + cola | **Docker Compose** | Varios servicios con una topología declarada. |
 
 Nixpacks: si necesitás fijar versión de Node, `nixpacks.toml` con `[phases.setup] nixpkgsArchive = '<sha>'`.
-Static: marcá SPA solo si la app enruta en cliente; Angular SSR **no** es SPA estática.
+Static: marcá SPA solo si la app enruta en cliente; un Next.js con servidor **no** es SPA estática.
 
 ## 3. Conectar el repo (GitHub)
 
@@ -111,7 +111,7 @@ app**: ver `release-and-rollback`.
 
 ## 9. Anti-patrones
 
-- Static pack para Angular SSR; Ports Mappings "para probar"; base expuesta a internet.
+- Static pack para un Next.js con servidor; Ports Mappings "para probar"; base expuesta a internet.
 - Producción y staging en el mismo environment cambiando la rama a mano.
 - Secretos como build args; `.env` de producción copiado a previews.
 - Deploy sin healthcheck y llamarlo "zero downtime".
@@ -120,7 +120,7 @@ app**: ver `release-and-rollback`.
 ## Checklist
 
 - [ ] Server/project/environment correctos; staging ≠ production.
-- [ ] Build pack elegido por tabla; Angular SSR como proceso Node.
+- [ ] Build pack elegido por tabla; el portal Next.js como proceso Node.
 - [ ] GitHub App instalada solo en los repos necesarios; auto-deploy y watch paths definidos.
 - [ ] Dominio con `https://`, DNS apuntando antes del primer deploy, sin Ports Mappings.
 - [ ] Proceso escucha en `0.0.0.0:$PORT`; Ports Exposes coincide.

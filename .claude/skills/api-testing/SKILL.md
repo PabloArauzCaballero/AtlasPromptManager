@@ -75,11 +75,11 @@ La UI nunca es barrera. Por cada endpoint que toca un recurso con dueño, corré
 // ✅ matriz como tabla: una fila nueva es una línea, no un test nuevo copiado
 it.each([
   ['sin token',        undefined,       401],
-  ['rol insuficiente', tokens.reception, 403],
-  ['otro usuario',     tokens.doctorB,   404],
+  ['rol insuficiente', tokens.soporte,   403],
+  ['otro usuario',     tokens.analistaB, 404],
   ['otro tenant',      tokens.tenantB,   404],
 ])('PATCH /records/:id — %s → %i', async (_n, token, status) => {
-  const req = request(app.getHttpServer()).patch(`/records/${recordOfDoctorA}`).send(patch);
+  const req = request(app.getHttpServer()).patch(`/records/${recordDeAnalistaA}`).send(patch);
   if (token) req.set('Authorization', `Bearer ${token}`);
   await req.expect(status);
   expect(await readRecord(recordOfDoctorA)).toEqual(original);   // no cambió NADA

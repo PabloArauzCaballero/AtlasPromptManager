@@ -19,7 +19,7 @@ evidencia observable. No es una tarea suelta ni un ticket de una sola capa.
 ## 1. Un carril = un resultado observable
 
 - Enunciá el carril por lo que un actor podrá ver o hacer al terminar, no por los archivos
-  que se tocan. "El doctor bloquea una franja de su agenda y deja de recibir solicitudes ahí",
+  que se tocan. "El comercio genera el QR de una caja y el cobro llega a su cuenta",
   no "agregar endpoint de bloqueo".
 - Tamaño: cerrable con evidencia en una tanda de trabajo acotada. Si necesita más de ~5 slices
   verticales, es dos carriles.

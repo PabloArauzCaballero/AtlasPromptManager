@@ -23,7 +23,7 @@ Complementa a `frontend-ux-states` (qué estado se muestra) y a `ux-clarity-usab
 ## 2. Botones y acciones
 
 - El botón nombra su acción, no "Aceptar/OK": `Guardar cambios`, `Enviar solicitud`,
-  `Eliminar paciente`. Al leer solo el botón se sabe qué va a pasar.
+  `Eliminar cliente`. Al leer solo el botón se sabe qué va a pasar.
 - Primera persona/impersonal consistente; verbo en infinitivo o imperativo, elegí uno.
 - El botón primario = la acción que la pantalla quiere; el secundario, en tono menor
   ("Cancelar" nunca compite visualmente con "Guardar").
@@ -77,8 +77,8 @@ culpa al usuario ni muestra el error crudo del backend.
 ## 7. Tono, voz e i18n
 
 - Definí una voz (cercana pero profesional, en un producto de salud: seria, respetuosa,
-  sin chistes con datos clínicos) y sostenela.
-- Nada de humor ni ansiedad en contextos sensibles (resultados, pagos, errores clínicos).
+  sin chistes con el dinero de la gente) y sostenela.
+- Nada de humor ni ansiedad en contextos sensibles (una solicitud rechazada, un pago, una mora).
 - Escribí pensando en traducción: evitá modismos difíciles de localizar, no concatenes
   frases con variables en medio ("Tenés " + n + " citas" se rompe en plurales/género —
   usá cadenas con formato y plurales, ver `frontend-i18n-l10n`).

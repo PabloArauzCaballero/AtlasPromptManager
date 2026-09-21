@@ -47,7 +47,7 @@ curl -fsS -o /dev/null -w '%{http_code}\n' -H "Authorization: Bearer $SMOKE_TOKE
 ```
 
 Reglas del smoke:
-- Usuario de smoke **dedicado**, con permisos mínimos, en datos de prueba; nunca un paciente real.
+- Usuario de smoke **dedicado**, con permisos mínimos, en datos de prueba; nunca un cliente real.
 - Solo lecturas o escrituras idempotentes y reversibles en un tenant de prueba.
 - Incluir un caso negativo (401/403) para confirmar que la autorización sigue activa.
 - Web SSR: `curl` del HTML de la home y de una ruta pública debe traer contenido renderizado,
@@ -77,7 +77,7 @@ chequeo, y notifica al canal de deploys. Ver `github-actions-ci`, `coolify-opera
 
 - "Deployment successful" en el panel como única evidencia.
 - Verificar en `localhost` o en staging y anunciar producción.
-- Smoke con usuario admin real o sobre datos de pacientes.
+- Smoke con usuario admin real o sobre datos de clientes.
 - Mirar solo la home; no confirmar la versión; no leer logs.
 - Dejar el smoke para "cuando alguien entre a probar".
 

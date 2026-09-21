@@ -1,6 +1,6 @@
 ---
 name: frontend-error-monitoring
-description: Monitoreo de errores del cliente web — `ErrorHandler` global de Angular, captura de errores de render, de promesas no manejadas y de red, correlación con el backend por request id, reporte a una herramienta con source maps, breadcrumbs de la sesión, y la regla de no loguear datos sensibles. Usar al montar el reporte de errores de la app, al decidir qué se captura y qué se manda, al correlacionar un error del front con su traza en el backend, o al revisar por qué los errores de producción "no se ven".
+description: Monitoreo de errores del cliente web — captura global de errores de render, de promesas no manejadas y de red, correlación con el backend por request id, reporte a una herramienta con source maps, breadcrumbs de la sesión, y la regla de no loguear datos sensibles. Usar al montar el reporte de errores de la app, al decidir qué se captura y qué se manda, al correlacionar un error del front con su traza en el backend, o al revisar por qué los errores de producción "no se ven".
 ---
 
 # Monitoreo de errores del cliente
@@ -11,22 +11,24 @@ filtrar datos sensibles.
 
 ## 1. Capturar todo, en un solo lugar
 
-Registrá un `ErrorHandler` global de Angular para los errores de render/DI, y enganchá los
-dos canales que Angular no cubre solo: promesas rechazadas y errores globales.
+Un error de render lo atrapa el **error boundary** del framework (en Next.js, el `error.tsx` de
+la ruta y el `global-error.tsx` de la raíz); los otros dos canales no los cubre nadie por vos:
+promesas rechazadas y errores globales.
 
-```typescript
-@Injectable()
-export class GlobalErrorHandler implements ErrorHandler {
-  private reporter = inject(ErrorReporter);
-  handleError(error: unknown): void {
-    this.reporter.capture(error);      // no re-lanzar hacia el usuario
-    console.error(error);               // en dev
-  }
+```tsx
+// error.tsx de la ruta: atrapa el render y ofrece reintentar
+export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+  useEffect(() => { reporter.capture(error); }, [error]);
+  return <ErrorState onRetry={reset} />;
 }
-// provideAppInitializer / main.ts:
-// window.addEventListener('unhandledrejection', e => reporter.capture(e.reason));
-// window.addEventListener('error', e => reporter.capture(e.error));
+
+// una sola vez, en el arranque del cliente:
+window.addEventListener('unhandledrejection', (e) => reporter.capture(e.reason));
+window.addEventListener('error', (e) => reporter.capture(e.error));
 ```
+
+Un error lanzado durante el render en el servidor no pasa por el boundary del cliente: se
+reporta desde el servidor o no se entera nadie.
 
 Los errores de red los mapea la capa de datos del cliente: decidí
 cuáles son esperados (un 404 de "no existe") y no valen reporte, y cuáles son fallos reales.
@@ -42,7 +44,7 @@ cuáles son esperados (un 404 de "no existe") y no valen reporte, y cuáles son 
 - Mandá: tipo de error, stack, ruta, versión/commit desplegado, request id, navegador, y
   breadcrumbs (últimas acciones/rutas).
 - **No mandes datos sensibles ni datos personales**: no incluyas el body de la respuesta, valores de
-  formularios con datos de pacientes, tokens ni la URL con parámetros sensibles. Scrubbeá
+  formularios con datos de clientes, tokens ni la URL con parámetros sensibles. Scrubbeá
   antes de enviar (ver `data-privacy-sensitive`). Esto aplica también a la herramienta de terceros:
   configurá su masking.
 

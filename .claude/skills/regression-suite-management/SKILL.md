@@ -13,7 +13,7 @@ escribe cada test: `e2e-playwright`, `api-testing`, `unit-testing`. La política
 
 ## 1. Organización
 
-- **Por módulo de negocio** (agenda, archivo clínico, contabilidad…), no por tipo de página ni
+- **Por módulo de negocio** (identidad, riesgo, expediente, contabilidad…), no por tipo de página ni
   por quién lo escribió. Un cambio en agenda tiene que poder correr "todo agenda" con un comando.
 - **Tags** ortogonales al módulo: `@smoke` (flujo crítico, corto), `@regression` (cobertura
   completa del módulo), `@vrt` (visual), `@ui-mock` (sin backend), `@slow`, `@quarantine`.

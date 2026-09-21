@@ -1,6 +1,6 @@
 ---
 name: terminology-value-sets
-description: Gate de terminología — todo catálogo cerrado (estados, tipos, especialidades, sexo, monedas, divisiones administrativas, diagnósticos) se modela como concepto codificado contra un servidor terminológico, nunca como enum de lenguaje ni label hardcodeado. Cubre code system vs value set vs concept, columnas `*_concept_id`, código vs display, versionado, value sets estáticos vs dinámicos, i18n del display y validación de pertenencia. Usar antes de crear un enum, un catálogo, un `select` de opciones fijas o un `switch` sobre un tipo, y al sembrar o traducir catálogos.
+description: Gate de terminología — todo catálogo cerrado (estados, tipos, rubros, sexo, monedas, divisiones administrativas, motivos de rechazo) se modela como concepto codificado contra un servidor terminológico, nunca como enum de lenguaje ni label hardcodeado. Cubre code system vs value set vs concept, columnas `*_concept_id`, código vs display, versionado, value sets estáticos vs dinámicos, i18n del display y validación de pertenencia. Usar antes de crear un enum, un catálogo, un `select` de opciones fijas o un `switch` sobre un tipo, y al sembrar o traducir catálogos.
 effort: high
 ---
 
@@ -83,10 +83,10 @@ if (request.status.is(RequestStatus.Approved)) { ... }
 | Para | Máquinas, lógica, integraciones | Personas |
 | Estabilidad | Inmutable una vez publicado | Cambia (ortografía, idioma, preferencia) |
 | Unicidad | Única dentro de su `system` | No garantizada |
-| Se persiste en el registro | Siempre (vía concepto) | Como **copia histórica** cuando el registro es clínico o legal |
+| Se persiste en el registro | Siempre (vía concepto) | Como **copia histórica** cuando el registro tiene valor legal |
 
 - Un código retirado se marca inactivo; **no se reutiliza** con otro significado ni se borra.
-- En registros clínicos guardá además el display mostrado y la versión: lo que el profesional vio
+- En un registro con valor legal guardá además el display mostrado y la versión: lo que el operador vio
   es parte del registro — ver `audit-trail-history`.
 
 ## 5. Versionado
@@ -106,7 +106,7 @@ if (request.status.is(RequestStatus.Approved)) { ... }
 | | Estático | Dinámico |
 |---|---|---|
 | Quién lo define | Modelo/terminología, en tiempo de diseño | La aplicación o sus usuarios, en runtime |
-| Ejemplos | Estados de un flujo, sexo, divisiones administrativas, especialidades | Etiquetas de una organización, motivos configurables por tenant |
+| Ejemplos | Estados de un flujo, sexo, divisiones administrativas, rubros | Etiquetas de una organización, motivos configurables por tenant |
 | Ciclo | Versionado, revisado, sembrado | CRUD con autorización y auditoría |
 | Documentación | Definición por concepto obligatoria | Reglas de quién crea y con qué alcance |
 | Riesgo | Rigidez | Proliferación y duplicados: exigí normalización y búsqueda previa |
@@ -129,11 +129,11 @@ validan además contra el tenant (`multi-tenancy`).
 
 ## 8. Estándares externos (solo como familias)
 
-SNOMED CT (clínica general), LOINC (laboratorio y observaciones), ICD/CIE (clasificación de
-enfermedades), ATC (clasificación de medicamentos). **Licencias, ediciones nacionales y
+ISO 4217 (monedas), ISO 3166 (países y subdivisiones), CIIU/CAEB (actividad económica), MCC
+(rubro de comercio), y el plan de cuentas normado del regulador. **Licencias, ediciones nacionales y
 condiciones de uso: verificar** con el responsable legal y con el organismo emisor antes de
 incorporarlos o redistribuirlos. Registrá procedencia: fuente, versión, fecha, licencia.
-No cargues terminología clínica desde fuentes no oficiales ni generada por IA — ver
+No cargues un catálogo normado desde fuentes no oficiales ni generado por IA — ver
 el catálogo que fije el `CLAUDE.md` del repo.
 
 ## Anti-patrones

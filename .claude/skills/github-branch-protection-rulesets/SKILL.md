@@ -50,7 +50,7 @@ el candado que lo hace cumplir en la plataforma, en vez de depender de la buena 
 | Require code scanning results | Si está habilitado | Sí |
 | Restrict creations / updates | Para patrones `release/*` | Sí |
 
-"Módulos sensibles" en un producto de salud: datos clínicos, consentimiento, autenticación,
+"Módulos sensibles" en Atlas: identidad y biometría, decisiones de riesgo, dinero, autenticación,
 autorización, contabilidad, esquema de datos, workflows de CI. Ver `data-privacy-sensitive`.
 
 ## 3. Checks requeridos — trampas

@@ -58,7 +58,7 @@ Reglas:
 - Declarar lo no cubierto es obligatorio: evita que un PASS parcial se lea como total.
 - Cambios de UI: captura antes/después (claro y oscuro si existen ambos).
 - Cambios de contrato (API, esquema, eventos): decilo arriba y enlazá los PRs hermanos.
-- Nada de datos personales ni clínicos reales en descripción, capturas o logs pegados.
+- Nada de datos personales ni financieros reales en descripción, capturas o logs pegados.
 
 ## 4. Draft PRs
 

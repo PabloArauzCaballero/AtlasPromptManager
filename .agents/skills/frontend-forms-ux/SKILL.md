@@ -13,7 +13,7 @@ que escribió. Un formulario mal resuelto es donde más se cae la conversión.
 
 - No grites errores mientras el usuario todavía está escribiendo un campo por primera vez.
   Validá **al salir del campo** (`blur`) para el primer error, y a partir de ahí en cada cambio.
-  En Angular, `updateOn: 'blur'` para el primer paso.
+  En la librería de formularios del repo, ese es el modo de validación `onBlur` / `onTouched`.
 - La validación de éxito puede mostrarse en vivo (p.ej. "usuario disponible") si ayuda.
 - No deshabilites el botón de enviar de entrada: dejá que el usuario intente y mostrá qué falta
   (un botón gris sin explicación confunde). Alternativa válida: habilitado + resumen de errores al enviar.

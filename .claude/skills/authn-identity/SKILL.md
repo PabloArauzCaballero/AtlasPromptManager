@@ -44,7 +44,7 @@ actor es `authz-access-control`. El marco general (OWASP Top 10, secretos, heade
 - Fijá el algoritmo esperado en el verificador; nunca aceptes el `alg` que trae el token
   (ataques `none` y confusión HS/RS).
 - Validá firma, `exp`, `iss`, `aud`. Un JWT decodificado sin verificar es input de usuario.
-- El payload es legible por cualquiera: sin PII ni datos clínicos, solo identificadores.
+- El payload es legible por cualquiera: sin PII ni datos sensibles, solo identificadores.
 - En NestJS: guard global por `APP_GUARD` y **excepción explícita** con un decorador `@Public()`
   (`SetMetadata` + `reflector.getAllAndOverride`). Una ruta nueva nace autenticada.
 

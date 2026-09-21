@@ -42,7 +42,7 @@ la auditoría rinde. Un módulo horrible pero congelado va al fondo de la lista.
 Cada hallazgo se clasifica por **impacto × esfuerzo**:
 
 - **Crítico** (arreglar ya): riesgo de seguridad, pérdida de datos, bug latente en flujo
-  clínico/financiero, ausencia total de tests en un módulo central.
+  de identidad o de dinero, ausencia total de tests en un módulo central.
 - **Alto** (planificar): hotspot complejo sin tests, duplicación de regla de negocio,
   deuda con interés alto.
 - **Medio / bajo**: estilo, nombres, deuda de bajo interés → boy scout, no proyecto.

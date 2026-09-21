@@ -24,7 +24,7 @@ Escribila en el reporte del carril antes de leer código. Una ficha por resultad
 
 ```text
 RESULTADO
-Actor:          <rol concreto: paciente, médico, admin de la organización, job nocturno>
+Actor:          <rol concreto: cliente, comercio, analista, admin de la organización, job nocturno>
 Dónde:          <ruta, pantalla, endpoint o superficie>
 Estado inicial: <datos y permisos de partida>
 Acción:         <lo que hace el actor>
@@ -43,10 +43,10 @@ Un criterio sirve si otra persona puede ejecutarlo y obtener **sí o no** sin pr
 
 | Un buen criterio es | ❌ | ✅ |
 |---|---|---|
-| Observable desde afuera | "El servicio maneja bien los solapamientos" | "Crear un turno que pisa otro devuelve 409 y la agenda no cambia" |
+| Observable desde afuera | "El servicio maneja bien los solapamientos" | "Publicar una tarifa que pisa otra vigente devuelve 409 y la vigencia no cambia" |
 | Binario | "La pantalla carga rápido" | "LCP ≤ umbral del proyecto medido en la ruta X" |
 | Con datos concretos | "Valida el formulario" | "Enviar con el email vacío muestra el error asociado al campo y conserva el resto" |
-| Centrado en el actor | "Se agrega la columna `status`" | "El médico ve la solicitud como *Rechazada* tras recargar" |
+| Centrado en el actor | "Se agrega la columna `status`" | "El analista ve la solicitud como *Rechazada* tras recargar" |
 | Incluye permiso | "El usuario edita el registro" | "...y otro usuario del mismo tenant sin el rol recibe 403" |
 
 Si un criterio no se deja escribir así, el requisito está incompleto o es ambiguo: registralo y
@@ -98,10 +98,10 @@ qué cambió · qué se comprobó · qué falló. Sin listas de herramientas usa
 orden: evidencia → cambios → no cubierto → riesgos.
 
 ❌ "Estuve revisando la arquitectura del módulo, analicé los servicios involucrados y realicé varios
-ajustes orientados a mejorar el flujo de reservas..."
+ajustes orientados a mejorar el flujo de solicitudes..."
 
-✅ "El médico ya puede bloquear un rango de agenda y el bloqueo persiste tras recargar
-(`VERIFIED`, salida abajo). **No funciona todavía**: bloquear sobre un turno ya confirmado devuelve
+✅ "El analista ya puede rechazar una solicitud con motivo y el rechazo persiste tras recargar
+(`VERIFIED`, salida abajo). **No funciona todavía**: rechazar una solicitud ya desembolsada devuelve
 500 en vez de 409."
 
 Un resultado parcial se dice como parcial en la primera línea. Nunca se esconde detrás de una

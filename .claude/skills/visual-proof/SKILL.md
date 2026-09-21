@@ -70,7 +70,7 @@ for (const vp of viewports) {                       // los del proyecto
 3. Estados difíciles de provocar (error, vacío, lento): forzalos interceptando la respuesta con `page.route`. Esto es válido para **evidencia visual de UI**; no cuenta como prueba del flujo real contra el backend — etiquetalo así.
 4. `fullPage: true` para layout de página; captura del elemento (`locator.screenshot()`) para componentes y overlays.
 5. Si el proyecto tema por clase/atributo en vez de `prefers-color-scheme`, activá el tema como lo hace el producto.
-6. Datos de prueba sintéticos: jamás datos personales o clínicos reales en capturas (`data-privacy-sensitive`).
+6. Datos de prueba sintéticos: jamás datos personales o financieros reales en capturas (`data-privacy-sensitive`).
 7. Serial y con un solo navegador: ver `agent-resource-control`. Patrones de locators y aislamiento: `e2e-playwright`.
 
 ## 5. Inspección — la parte que cuenta

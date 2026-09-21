@@ -79,8 +79,8 @@ LIMIT $pageSize + 1;   -- el +1 dice si hay página siguiente
 
 - Los buscadores de personas devuelven solo lo que el actor tiene derecho a ver **en ese
   contexto**. Un directorio público muestra lo que el profesional/entidad aceptó publicar; no la ficha.
-- Antes del consentimiento/relación de atención, la búsqueda no revela datos clínicos ni de
-  contacto privados. Devolvé el mínimo (nombre público, especialidad), no todo el registro.
+- Sin base legal ni relación con el titular, la búsqueda no revela datos financieros ni de
+  contacto privados. Devolvé el mínimo (nombre público, rubro), no todo el registro.
 - Cuidado con **inferencia por filtros**: permitir filtrar pacientes por diagnóstico o por
   medicación puede exponer condición de salud aunque no muestres el campo. Restringí esos filtros
   por rol y auditá su uso.
@@ -106,7 +106,7 @@ LIMIT $pageSize + 1;   -- el +1 dice si hay página siguiente
 - `LIKE '%x%'` sin índice trigram sobre tablas grandes; búsqueda sin `EXPLAIN`.
 - Offset para paginar catálogos grandes; cursor sin desempate único.
 - Filtro de tenant que viene del cliente o se olvida; buscador que devuelve la entidad completa.
-- Permitir filtrar personas por atributos clínicos sin control ni auditoría.
+- Permitir filtrar personas por atributos sensibles (deuda, score, mora) sin control ni auditoría.
 
 ## Checklist
 
@@ -116,5 +116,5 @@ LIMIT $pageSize + 1;   -- el +1 dice si hay página siguiente
 - [ ] Tenant impuesto por contexto, nunca por el cliente.
 - [ ] Paginación por cursor keyset con orden determinista (`col, id`) y cursor opaco validado; `pageSize` con tope.
 - [ ] La búsqueda de personas respeta consentimiento/relación y devuelve el mínimo.
-- [ ] Filtros que podrían inferir datos clínicos están restringidos por rol y auditados.
+- [ ] Filtros que podrían inferir datos sensibles están restringidos por rol y auditados.
 - [ ] Sin N+1; proyección mínima; catálogos estables cacheados, resultados por-usuario no.

@@ -5,7 +5,7 @@ description: Gestión de dependencias de terceros bajo control — lockfile comm
 
 # Gestión de dependencias
 
-Cada dependencia es código ajeno que corre con tus privilegios y toca datos de pacientes. Es
+Cada dependencia es código ajeno que corre con tus privilegios y toca datos de clientes. Es
 superficie de ataque, peso, y una promesa de mantenimiento futuro. Agregala con criterio y
 mantenela bajo control.
 

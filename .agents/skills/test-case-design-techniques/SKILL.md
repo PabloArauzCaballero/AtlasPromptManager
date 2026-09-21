@@ -24,15 +24,15 @@ Los bugs se concentran en los bordes de cada clase. Para un rango `[min, max]` p
 ## 3. Tabla de decisión
 Cuando la salida depende de varias condiciones combinadas, tabulá.
 
-| Rol | Es dueño | Consentimiento | ¿Puede ver ficha? |
+| Rol | Es dueño del caso | Base legal vigente | ¿Puede ver el expediente? |
 |---|---|---|---|
-| médico | sí | — | sí |
-| médico | no | sí | sí |
-| médico | no | no | no |
+| analista | sí | — | sí |
+| analista | no | sí | sí |
+| analista | no | no | no |
 | admin | — | — | no |
 
 - Una fila = un caso. Colapsá filas donde una condición es indiferente (`—`).
-- Cubre combinaciones que "a ojo" se olvidan (el médico no dueño sin consentimiento).
+- Cubre combinaciones que "a ojo" se olvidan (el analista que no es dueño y no tiene base legal).
 
 ## 4. Transición de estados
 Para entidades con ciclo de vida (cita, cotización, solicitud): tomá la máquina de

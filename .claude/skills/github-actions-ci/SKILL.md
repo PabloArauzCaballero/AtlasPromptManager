@@ -144,7 +144,7 @@ secrets ni tokens en vars.
 |---|---|
 | Node / Yarn | `actions/setup-node` con `cache: yarn` (soporta npm, Yarn y pnpm) |
 | Python / pip | `actions/setup-python` con `cache: pip` (también pipenv, Poetry) |
-| Flutter / pub | `actions/cache` sobre el pub cache, key por `hashFiles('**/pubspec.lock')` |
+| Docker / BuildKit | `cache-from`/`cache-to` del builder, o `actions/cache` sobre el layer cache |
 | Otro | `actions/cache`: `path`, `key`, `restore-keys`; salida `cache-hit` |
 
 - Key = SO + hash del lockfile: `${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}`.

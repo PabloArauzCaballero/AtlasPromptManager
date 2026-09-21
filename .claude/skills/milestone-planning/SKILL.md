@@ -39,7 +39,7 @@ Con este corte no hay nada demostrable hasta el final, y el estado real queda oc
 
 ✅ Hitos reales (cada uno se demuestra solo):
 ```
-H1 — Un turno solapado se rechaza y el paciente ve por qué
+H1 — Una tarifa que pisa otra vigente se rechaza y el operador ve por qué
 H2 — El profesional puede bloquear una franja y deja de recibir reservas ahí
 ```
 

@@ -4,7 +4,7 @@ description: Modo offline y sincronización en la app móvil — almacenamiento 
 effort: high
 ---
 
-# Offline y sincronización — Flutter
+# Offline y sincronización en la app móvil
 
 En móvil la conexión se corta. Offline es un estado de diseño, no un error. Definí por pantalla
 si es **solo lectura cacheada**, **lectura + escritura diferida** o **requiere conexión** (y decilo
@@ -12,8 +12,9 @@ claro en la UI).
 
 ## 1. Almacenamiento local
 
-- Base local para datos estructurados: `drift` (SQL tipado sobre SQLite) o `sqflite`. `shared_preferences`
-  solo para preferencias chicas, no para datos de dominio. Verificá la API del paquete en pub.dev.
+- Base local para datos estructurados: SQLite (en Expo, `expo-sqlite`) o la capa que use el
+  proyecto. El almacenamiento de preferencias (`AsyncStorage`) es solo para preferencias chicas,
+  no para datos de dominio. Verificá la API en la doc de la versión instalada.
 - Modelá la caché con una marca de tiempo de sincronización y el origen del dato (servidor vs local
   pendiente), para saber qué mostrar y qué falta subir.
 - Datos sensibles en reposo: **cifrados** (ver §5). No los dejes en claro en el dispositivo.
@@ -45,7 +46,7 @@ claro en la UI).
 
 ## 5. Cifrado en reposo (datos sensibles)
 
-- Datos de pacientes en la base local deben estar cifrados (SQLCipher con drift/sqflite, o cifrado a
+- Los datos del cliente en la base local deben estar cifrados (base local cifrada, o cifrado a
   nivel de campo). La clave va en el almacenamiento seguro del sistema, no en el código ni en la base
   (ver `mobile-release-security`).
 - Minimizá lo que se guarda offline: solo lo necesario para el flujo, con retención acotada; purgá al

@@ -1,6 +1,6 @@
 ---
 name: dockerfile-production
-description: Dockerfiles de producción para el stack (API NestJS con yarn 4, Angular SSR, Astro) — multi-stage, base mínima fijada, usuario no root, .dockerignore, caché con Corepack y BuildKit, solo deps de producción al final, HEALTHCHECK con curl/wget presente, señales y PID 1, sin secretos en capas ni ARG, tamaño y escaneo de vulnerabilidades. Usar al escribir o revisar un Dockerfile, al pasar de Nixpacks a Dockerfile, cuando la imagen pesa o el build es lento, o cuando el contenedor no se apaga limpio.
+description: Dockerfiles de producción para el stack (API NestJS con yarn 4, portales Next.js) — multi-stage, base mínima fijada, usuario no root, .dockerignore, caché con Corepack y BuildKit, solo deps de producción al final, HEALTHCHECK con curl/wget presente, señales y PID 1, sin secretos en capas ni ARG, tamaño y escaneo de vulnerabilidades. Usar al escribir o revisar un Dockerfile, al pasar de Nixpacks a Dockerfile, cuando la imagen pesa o el build es lento, o cuando el contenedor no se apaga limpio.
 ---
 
 # Dockerfile de producción
@@ -80,10 +80,11 @@ CMD ["node", "dist/main.js"]
 Ajustá `dist/main.js` al `outDir` real del proyecto. Si la app necesita compilar nativos,
 agregá `python3 make g++` **solo** en la etapa `deps`.
 
-## 5. Angular SSR
+## 5. Portal Next.js
 
-El build con el application builder genera `dist/<app>/browser/` (estático) y
-`dist/<app>/server/server.mjs` (proceso Node). Es un **servidor**, no un sitio estático.
+Con `output: 'standalone'` en `next.config`, el build deja en `.next/standalone/` un servidor Node
+con **solo** las dependencias que usa. Es un **servidor**, no un sitio estático, y hay que copiar
+aparte los estáticos: `.next/static` y `public/`, que el standalone no incluye.
 
 ```dockerfile
 FROM node:22-alpine AS build
@@ -97,19 +98,21 @@ RUN yarn build
 
 FROM node:22-alpine AS runtime
 RUN apk add --no-cache wget
-ENV NODE_ENV=production PORT=4000
+ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0
 WORKDIR /app
-COPY --from=build --chown=node:node /app/dist/<app> ./dist/<app>
+COPY --from=build --chown=node:node /app/.next/standalone ./
+COPY --from=build --chown=node:node /app/.next/static ./.next/static
+COPY --from=build --chown=node:node /app/public ./public
 USER node
-EXPOSE 4000
+EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD wget -qO- http://localhost:4000/ >/dev/null || exit 1
-CMD ["node", "dist/<app>/server/server.mjs"]
+  CMD wget -qO- http://localhost:3000/ >/dev/null || exit 1
+CMD ["node", "server.js"]
 ```
-El puerto lo lee tu `server.ts` (el scaffold del CLI usa la variable `PORT`; verificalo en el
-proyecto). Si el `server.mjs` importa dependencias no bundleadas, copiá también `node_modules`
-de producción como en §4. Astro estático: no necesita Dockerfile (Static pack); Astro con
-adapter Node se trata igual que esta receta.
+El servidor lee `PORT` y `HOSTNAME`: sin `HOSTNAME=0.0.0.0` escucha solo en loopback y el
+healthcheck del orquestador no llega. **Las variables `NEXT_PUBLIC_*` se hornean en el build**,
+no en el arranque: cambiarlas en el panel no cambia lo servido, hay que reconstruir. Y `NODE_ENV`
+inyectado como `ARG` durante el build rompe `next build`: va solo en la etapa de runtime.
 
 ## 6. `HEALTHCHECK`
 

@@ -1,6 +1,6 @@
 ---
 name: seed-data-catalogs
-description: Estándar para seeds y catálogos — cargas idempotentes con IDs estables (la segunda corrida inserta 0), datos REALES con procedencia registrada (fuente, URL, fecha, licencia), prohibición de datos ficticios presentados como reales, jerarquías padre-hijo, datasets grandes por importación y datos de demo separados. Usar al crear o actualizar un catálogo (regiones, ciudades, especialidades, aseguradoras, instituciones, monedas, medicamentos), al escribir un seeder o generador de datos, al corregir un dato cargado, o cuando un requisito pide "datos reales".
+description: Estándar para seeds y catálogos — cargas idempotentes con IDs estables (la segunda corrida inserta 0), datos REALES con procedencia registrada (fuente, URL, fecha, licencia), prohibición de datos ficticios presentados como reales, jerarquías padre-hijo, datasets grandes por importación y datos de demo separados. Usar al crear o actualizar un catálogo (regiones, ciudades, rubros de comercio, bancos, monedas, plan de cuentas), al escribir un seeder o generador de datos, al corregir un dato cargado, o cuando un requisito pide "datos reales".
 ---
 
 # Seeds y catálogos
@@ -14,9 +14,9 @@ posterior a la carga es `data-quality-validation`; el esquema que los recibe,
 
 | Clase | Origen | Quién lo cambia | Ejemplo |
 |---|---|---|---|
-| **Catálogo oficial** | Organismo o estándar externo | Solo una nueva versión de la fuente | División administrativa, códigos de moneda, terminología clínica |
+| **Catálogo oficial** | Organismo o estándar externo | Solo una nueva versión de la fuente | División administrativa, códigos de moneda, plan de cuentas normado |
 | **Catálogo interno** | Decisión de la casa | Un cambio revisado en el repo | Estados de un flujo, tipos de notificación |
-| **Dato aportado por usuario** | La aplicación en runtime | El usuario | Una clínica que se registra |
+| **Dato aportado por usuario** | La aplicación en runtime | El usuario | Un comercio que se registra |
 
 - Cada fila sabe a qué clase pertenece (columna u origen separado). Un usuario nunca edita un
   catálogo oficial; una recarga de catálogo nunca pisa un dato de usuario.
@@ -40,11 +40,11 @@ transform: normalización de mayúsculas; sin filas agregadas ni inferidas
 checksum_sha256: <hash del archivo crudo>
 ```
 
-3. **Prohibido** presentar como real un dato ficticio o inferido: universidades, aseguradoras,
-   especialidades, instituciones, direcciones. Si no hay fuente, el catálogo queda **vacío con
+3. **Prohibido** presentar como real un dato ficticio o inferido: bancos, entidades financieras,
+   rubros, bancos, direcciones. Si no hay fuente, el catálogo queda **vacío con
    un TODO y la fuente pendiente**, no relleno de inventos.
-4. **Datos clínicos** (medicamentos, dosis, contraindicaciones, interacciones, relaciones
-   título → especialidad): jamás se completan ni se "corrigen" por inferencia. Exigen dataset
+4. **Datos normados** (plan de cuentas, códigos impositivos, tasas máximas, relaciones
+   cuenta → naturaleza): jamás se completan ni se "corrigen" por inferencia. Exigen dataset
    con evidencia y validación de quien es dueño funcional de ese catálogo.
 5. Verificá que la licencia permite el uso y la redistribución que vas a hacer. Si no está
    clara, escalá; no la asumas.

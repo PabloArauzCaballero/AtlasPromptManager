@@ -1,6 +1,6 @@
 ---
 name: threat-modeling
-description: Modelado de amenazas con STRIDE aplicado a un flujo o feature ANTES de construirlo — diagrama de flujo de datos, límites de confianza, una amenaza por categoría (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege), control mitigante, riesgo residual y priorización. Produce un artefacto reutilizable por feature de salud (archivo clínico, agenda, recetas, seguros). Usar al diseñar una feature nueva o sensible, al revisar un diseño antes de codear, y como insumo de la evaluación de seguridad.
+description: Modelado de amenazas con STRIDE aplicado a un flujo o feature ANTES de construirlo — diagrama de flujo de datos, límites de confianza, una amenaza por categoría (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege), control mitigante, riesgo residual y priorización. Produce un artefacto reutilizable por feature sensible (expediente, identidad, cobros, contabilidad). Usar al diseñar una feature nueva o sensible, al revisar un diseño antes de codear, y como insumo de la evaluación de seguridad.
 allowed-tools: Read Grep Glob Bash
 effort: high
 ---
@@ -16,7 +16,7 @@ Complementa a `security-guardrails` (catálogo de controles) y alimenta a `pente
 
 ## 1. ¿Qué estamos construyendo? — diagrama de flujo de datos
 
-Dibujá el flujo con estos elementos: **actores externos** (paciente, doctor, aseguradora),
+Dibujá el flujo con estos elementos: **actores externos** (cliente, comercio, banco),
 **procesos** (API, worker, servicio), **almacenes** (base, cache, archivos) y **flujos de datos**
 entre ellos. Marcá los **límites de confianza**: dónde el dato cruza de algo menos confiable a
 algo más (navegador → API, API → base, API → tercero). Las amenazas viven en esos cruces.
@@ -52,13 +52,13 @@ Por cada amenaza plausible, un control y a qué skill pertenece:
 - Para cada amenaza: **mitigada / aceptada / transferida / pendiente**. La aceptación de un
   riesgo lleva dueño y fecha de revisión (`pentest-reporting-remediation`).
 - Priorizá por impacto × probabilidad. En salud, cualquier amenaza de **Information disclosure**
-  o **Elevation** sobre datos de pacientes es prioridad máxima por defecto.
+  o **Elevation** sobre datos de clientes es prioridad máxima por defecto.
 - Las amenazas no mitigadas se convierten en casos de prueba para el ejercicio de evaluación y en
   tests de `security-testing`.
 
 ## 5. Foco por feature de salud (ejemplos de dónde mira STRIDE)
 
-- **Archivo clínico**: Info disclosure (otro doctor sin relación de atención), Elevation, Tampering
+- **Expediente del cliente**: Info disclosure (un analista sin relación con el caso), Elevation, Tampering
   (edición destructiva → `audit-trail-history`), Repudiation (quién vio/editó).
 - **Agenda/citas**: Tampering y DoS (doble reserva, `concurrency-and-locking`), Info disclosure.
 - **Documentos con valor legal** (contrato, factura, comprobante): Tampering (monto), Repudiation

@@ -74,9 +74,9 @@ Reglas:
 ### Datos sensibles y entornos de prueba
 
 Restaurar producción en staging/dev/preview **está prohibido sin anonimizar**: nombres,
-documentos, contactos, notas clínicas, adjuntos. Opciones en orden de preferencia: seeds
+documentos, contactos, expedientes, adjuntos. Opciones en orden de preferencia: seeds
 sintéticos (`seed-data-catalogs`, `test-data-management`); dump anonimizado por script
-versionado y revisado; subconjunto sin tablas clínicas. Ver `data-privacy-sensitive`.
+versionado y revisado; subconjunto sin las tablas con datos de personas. Ver `data-privacy-sensitive`.
 
 ## 6. Upgrade de versión mayor
 

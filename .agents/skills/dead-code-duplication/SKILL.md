@@ -65,7 +65,8 @@ grep -rn "\['computeRiskScore'\]\|\[\`" src/  # acceso dinámico por índice
 ```
 
 Sospechá de: acceso por string (`obj[name]`), inyección de dependencias por token,
-plantillas HTML de Angular (knip cubre TS, no siempre el binding del template), reflexión,
+plantillas y strings dinámicos (el analizador cubre los imports, no siempre lo que se resuelve
+en tiempo de ejecución), reflexión,
 endpoints llamados solo por el front o por un cron externo, migraciones/seeds referenciados
 por nombre. Si hay duda, deprecá primero (log de "esto todavía se usa") y borrá después.
 

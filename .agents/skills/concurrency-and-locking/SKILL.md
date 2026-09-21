@@ -35,7 +35,7 @@ await em.nativeUpdate(Post, { id }, { likes: raw('likes + 1') }); // verificar A
 
 | | Optimista (versión de fila) | Pesimista (`FOR UPDATE`) |
 |---|---|---|
-| Cuándo | Conflictos raros; ediciones de usuario que duran minutos (formularios, ficha clínica) | Conflictos frecuentes sobre la misma fila; sección crítica corta dentro de una transacción |
+| Cuándo | Conflictos raros; ediciones de usuario que duran minutos (formularios, expediente) | Conflictos frecuentes sobre la misma fila; sección crítica corta dentro de una transacción |
 | Costo | El perdedor rehace su trabajo | Los demás esperan; riesgo de deadlock |
 | Cruza requests | Sí: la versión viaja al cliente y vuelve | No: el lock muere con la transacción |
 | Falla como | `OptimisticLockError` → 409/412 | espera, `lock_timeout` (`55P03`) o deadlock (`40P01`) |
@@ -114,8 +114,9 @@ en una tabla con `UNIQUE`, en la misma transacción que el efecto. Ver `async-me
 
 ## 6. Carreras típicas de la casa
 
-- **Doble reserva de turno**: dos pacientes toman el mismo hueco. → `EXCLUDE` sobre
-  `(doctor_id, rango)`; el perdedor recibe 409 con código estable y la UI recarga huecos.
+- **Dos tarifas vigentes a la vez**: dos operadores publican tarifas que se pisan para el mismo
+  comercio. → `EXCLUDE` sobre `(comercio_id, rango)`; el perdedor recibe 409 con código estable
+  y la UI recarga la vigencia.
   Un `SELECT` de disponibilidad previo es solo cortesía.
 - **Bloqueo de agenda vs cita existente**: el bloqueo y la cita se crean a la vez. →
   misma constraint de exclusión cubriendo ambos tipos, o lock de la fila de agenda.

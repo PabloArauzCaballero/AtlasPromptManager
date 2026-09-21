@@ -29,8 +29,8 @@ Usá estos como punto de partida (adaptá a los nombres reales del proyecto):
 ```bash
 # SQL crudo con interpolación de variables
 grep -rnE "(query|execute)\(.*\$\{" src/
-# Sanitizado de Angular desactivado
-grep -rn "bypassSecurityTrust" src/
+# HTML crudo inyectado en el DOM
+grep -rn "dangerouslySetInnerHTML\|innerHTML" src/
 # any/as/! que callan al compilador en bordes (typescript-standards)
 grep -rnE ":\s*any\b|as any| as unknown as " src/
 # posible mass assignment: body crudo a la entidad

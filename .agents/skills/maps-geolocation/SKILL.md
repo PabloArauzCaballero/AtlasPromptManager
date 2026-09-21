@@ -45,7 +45,7 @@ WHERE ST_DWithin(location, ST_MakePoint($lng, $lat)::geography, 5000);
 
 ## 3. Nearest-neighbor: "los N más cercanos"
 
-Para "las 10 farmacias más cercanas a mi receta", ordená por el operador de distancia `<->`, que
+Para "los 10 comercios más cercanos", ordená por el operador de distancia `<->`, que
 usa el índice espacial cuando está en el `ORDER BY` contra un punto constante:
 
 ```sql
@@ -76,11 +76,11 @@ LIMIT 10;
 La ubicación de una persona es dato sensible; combinada con salud, más aún (`data-privacy-sensitive`).
 
 - **Minimizá**: guardá la ubicación solo si el feature la necesita, y con la **precisión mínima**
-  que sirva. Para "hay servicios en tu zona" no necesitás la posición exacta del paciente:
+  que sirva. Para "hay comercios en tu zona" no necesitás la posición exacta del cliente:
   redondeá/aproximá.
 - No registres un historial de ubicaciones del usuario salvo requisito explícito y consentido
   (`data-privacy-sensitive`); un rastro de dónde estuvo alguien es altamente sensible.
-- La ubicación de un paciente no viaja en logs, URLs ni notificaciones (`notifications-delivery`).
+- La ubicación de un cliente no viaja en logs, URLs ni notificaciones (`notifications-delivery`).
 - Distinguí ubicación **pública** (dirección de un consultorio publicada) de **privada** (dónde
   está el usuario ahora): reglas de acceso distintas.
 - La geolocalización del navegador/dispositivo requiere permiso del usuario; pedilo con propósito
@@ -104,7 +104,7 @@ La ubicación de una persona es dato sensible; combinada con salud, más aún (`
 - Olvidar el índice GiST (todas las cercanías en seq scan) o `ST_MakePoint(lat, lng)` invertido.
 - Traer todos los puntos al cliente/servicio y filtrar por distancia en memoria.
 - Guardar posición exacta o historial de ubicación sin necesidad ni consentimiento.
-- Ubicación del paciente en logs/URLs; API key sin restringir; ignorar términos del proveedor.
+- Ubicación del cliente en logs/URLs; API key sin restringir; ignorar términos del proveedor.
 
 ## Checklist
 

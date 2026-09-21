@@ -25,11 +25,11 @@ Primero se escribe la tabla (y se valida con negocio); después el código.
 
 | Desde | Acción | Hacia | Quién | Guarda de datos | Efecto |
 |---|---|---|---|---|---|
-| `requested` | `accept` | `accepted` | profesional asignado | horario libre | notificar paciente |
-| `requested` | `reject` | `rejected` ⛔ | profesional asignado | motivo obligatorio | notificar paciente |
-| `requested` | `cancel` | `cancelled` ⛔ | paciente dueño | — | liberar hueco |
-| `accepted` | `cancel` | `cancelled` ⛔ | paciente o profesional | dentro de la ventana permitida | liberar hueco, notificar |
-| `accepted` | `complete` | `completed` ⛔ | profesional | fecha ya ocurrida | habilitar nota clínica |
+| `requested` | `accept` | `accepted` | analista asignado | evaluación de riesgo vigente | notificar al solicitante |
+| `requested` | `reject` | `rejected` ⛔ | analista asignado | motivo obligatorio | notificar al solicitante |
+| `requested` | `cancel` | `cancelled` ⛔ | solicitante dueño | — | liberar el cupo reservado |
+| `accepted` | `cancel` | `cancelled` ⛔ | solicitante o analista | dentro de la ventana permitida | liberar cupo, notificar |
+| `accepted` | `disburse` | `disbursed` ⛔ | tesorería | contrato firmado | generar el asiento contable |
 
 ⛔ = terminal. **Lo que no está en la tabla está prohibido** (deny by default).
 
@@ -112,7 +112,7 @@ Tabla append-only `<entidad>_transition`: `entity_id`, `from_status`, `to_status
   (ver `audit-trail-history`).
 - Nunca se edita ni se borra. `reason` obligatorio en rechazos, cancelaciones y reversas.
 - Sin datos sensibles en `reason`/`metadata` salvo que el acceso al historial esté tan restringido
-  como el dato clínico (ver `data-privacy-sensitive`).
+  como el dato que protege (ver `data-privacy-sensitive`).
 
 ## 7. Efectos secundarios: después del commit
 
@@ -129,7 +129,7 @@ Tabla append-only `<entidad>_transition`: `entity_id`, `from_status`, `to_status
 - Un estado terminal no tiene salidas. "Reabrir" no es editar el estado: es una acción
   nueva y explícita en la tabla (`reopen`), con su guarda y su rastro, o una **entidad
   nueva** que referencia a la anterior (nueva cotización que reemplaza a la vencida).
-- En lo contable y lo clínico no hay "deshacer": hay **reversa/enmienda** como registro
+- En lo contable y en lo que tiene valor legal no hay "deshacer": hay **reversa/enmienda** como registro
   nuevo (ver `accounting-double-entry`, `audit-trail-history`).
 - Transiciones por tiempo (`expire`, `no_show`): las ejecuta un job con el **mismo**
   camino de código que las manuales — misma tabla, mismo `UPDATE` condicional, actor

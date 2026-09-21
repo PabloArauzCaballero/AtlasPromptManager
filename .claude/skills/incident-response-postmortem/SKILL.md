@@ -7,7 +7,7 @@ description: Respuesta a incidentes de producción y postmortem sin culpables �
 
 Un incidente es cualquier cosa que afecta a los usuarios en producción: caída, degradación,
 datos incorrectos o una posible exposición de datos. En una plataforma de salud, la sospecha de
-acceso indebido a datos de pacientes es un incidente de máxima prioridad. El objetivo en caliente
+acceso indebido a datos de clientes es un incidente de máxima prioridad. El objetivo en caliente
 es **restaurar el servicio**; el aprendizaje viene después, sin buscar culpables.
 
 ## 1. Clasificar severidad
@@ -76,7 +76,7 @@ Estructura:
   se quedan en el documento.
 - Si el incidente reveló una regla que "el agente/equipo debería haber seguido", convertila en una
   guarda determinista (`hooks-and-guardrails`) o en una skill/rule, no en un recordatorio.
-- Si hubo o pudo haber exposición de datos personales/clínicos, seguí el proceso de notificación de
+- Si hubo o pudo haber exposición de datos personales o financieros, seguí el proceso de notificación de
   brechas con el responsable legal (`regulatory-compliance-mapping`) — no lo decidas por tu cuenta.
 
 ## Anti-patrones
@@ -103,4 +103,4 @@ Estructura:
 - [ ] Causa raíz sistémica que explica todos los síntomas, sin culpables.
 - [ ] Acciones correctivas con dueño y fecha, cargadas al backlog.
 - [ ] Guardas/alertas nuevas para que no se repita.
-- [ ] Ruta legal/compliance seguida si hubo riesgo de datos personales o clínicos.
+- [ ] Ruta legal/compliance seguida si hubo riesgo de datos personales o financieros.

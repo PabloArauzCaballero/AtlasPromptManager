@@ -5,33 +5,35 @@ allowed-tools: Read Grep Glob Bash
 effort: high
 ---
 
-# Release y seguridad móvil — Flutter
+# Release y seguridad móvil
 
 El dispositivo es un entorno hostil: puede estar rooteado, el binario se puede inspeccionar y el
 tráfico interceptar. Protegé credenciales, binario y datos, y no dejes salir datos sensibles por telemetría.
 
 ## 1. Almacenamiento seguro de tokens
 
-- Tokens de sesión/refresh en almacenamiento seguro del sistema: `flutter_secure_storage`, que usa
-  **Keychain** en iOS y **Keystore / EncryptedSharedPreferences** en Android (verificá las opciones
-  `IOSOptions`/`AndroidOptions` en pub.dev para tu versión).
-- **Nunca** tokens ni datos sensibles en `shared_preferences`, en archivos en claro, ni logueados.
+- Tokens de sesión/refresh en el almacenamiento seguro del sistema: **Keychain** en iOS y
+  **Keystore / EncryptedSharedPreferences** en Android. En Expo eso es `expo-secure-store`;
+  verificá sus opciones en la doc de la versión instalada.
+- **Nunca** tokens ni datos sensibles en el almacenamiento de preferencias (`AsyncStorage` y
+  equivalentes), en archivos en claro, ni logueados.
 - Refresh token rotado; borrá todo lo sensible del dispositivo al cerrar sesión. Coordiná con
   `authn-identity` (ciclo de vida y rotación de tokens).
 
 ## 2. Certificate pinning
 
-- Pineá el certificado/clave pública del backend para cortar intercepción (MITM), con la librería
-  HTTP que use el proyecto (p. ej. pinning en `dio` o `SecurityContext`; verificá el mecanismo).
+- Pineá el certificado/clave pública del backend para cortar intercepción (MITM), con el mecanismo
+  que ofrezca la capa de red del proyecto; verificá cómo se configura en la versión instalada.
 - Planificá la **rotación**: pinear la clave pública y tener un pin de respaldo evita dejar la app
   inutilizable cuando el certificado cambia. Documentá el procedimiento de rotación.
 
 ## 3. Ofuscación y binario
 
-- Compilá release con ofuscación: `flutter build <apk|appbundle|ipa> --obfuscate --split-debug-info=<dir>`
-  y **guardá** el `split-debug-info` para poder simbolizar crashes.
-- No embebas secretos en el binario: una API key en el código Dart es extraíble. Lo que deba ser
-  secreto vive en el backend; el cliente usa tokens de usuario.
+- Compilá release con el minificado/ofuscación de la plataforma activados, y **guardá los mapas de
+  símbolos** (source maps de Hermes, mapping de R8) para poder simbolizar los crashes después.
+- No embebas secretos en el binario: una API key en el bundle JS es extraíble, y una variable
+  `EXPO_PUBLIC_*` viaja al dispositivo por definición. Lo que deba ser secreto vive en el backend;
+  el cliente usa tokens de usuario.
 - Considerá detección de root/jailbreak solo como señal, no como única defensa.
 
 ## 4. Permisos mínimos
@@ -51,9 +53,9 @@ tráfico interceptar. Protegé credenciales, binario y datos, y no dejes salir d
 
 ## 6. Telemetría sin datos sensibles
 
-- Crash reporting y analytics: **jamás** datos sensibles, tokens ni identificadores clínicos en eventos,
+- Crash reporting y analytics: **jamás** datos sensibles, tokens ni identificadores del titular en eventos,
   breadcrumbs o mensajes de error. Filtrá/allow-list los campos que se envían.
-- Logs de release al mínimo; nada de volcar respuestas de la API con datos de pacientes.
+- Logs de release al mínimo; nada de volcar respuestas de la API con datos de clientes.
   Ver `data-privacy-sensitive` y `backend-observability` (mismo criterio de no-PII en logs).
 
 ## Evidencia / DoD

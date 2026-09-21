@@ -28,7 +28,7 @@ Mínimo de la casa: **8 positivos de disparo, 8 negativos, 3 de confusión por c
 ```yaml
 - id: trig-pos-03
   kind: trigger_positive
-  prompt: "el listado de pacientes tarda 9 segundos con 50 mil filas, fijate qué pasa"
+  prompt: "el listado de clientes tarda 9 segundos con 50 mil filas, fijate qué pasa"
   expect_skill: code-efficiency
 - id: trig-neg-02
   kind: trigger_negative

@@ -16,7 +16,7 @@ Catálogos y seeds base del producto: `seed-data-catalogs`.
 |---|---|---|---|
 | **Referencia** | Catálogos, value sets, terminología, roles, configuración | El mecanismo oficial de seeds del proyecto | Se carga una vez; los tests **solo leen** |
 | **Escenario** | Tenants, usuarios por rol, organizaciones de prueba | Setup de la suite (global setup / fixture por worker) | Dura la corrida |
-| **Del test** | El paciente, la cita, el asiento que este test ejercita | El propio test, vía factory | Dura el test |
+| **Del test** | El cliente, la solicitud, el asiento que este test ejercita | El propio test, vía factory | Dura el test |
 
 Reglas: un test nunca modifica la capa de referencia; nunca depende de datos de escenario que
 otro test pueda mutar; y todo lo que afirma lo creó él mismo.
@@ -44,7 +44,7 @@ const appt = await make.appointment({ patient, status: 'requested' });
 ## 3. Determinismo
 
 - **Unicidad sin azar ciego**: sufijo derivado de un contador o de `workerIndex` + id de corrida
-  (`paciente-w2-0007@test.invalid`). Si usás un generador tipo faker, fijá la **semilla** y
+  (`cliente-w2-0007@test.invalid`). Si usás un generador tipo faker, fijá la **semilla** y
   registrala en la salida para poder reproducir.
 - **Reloj**: nunca `new Date()` implícito en una aserción. Inyectá el reloj en backend; en
   unitarios timers falsos (`unit-testing`); en navegador `page.clock` (`e2e-playwright`).

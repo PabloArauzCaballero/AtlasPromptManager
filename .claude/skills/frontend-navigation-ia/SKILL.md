@@ -1,6 +1,6 @@
 ---
 name: frontend-navigation-ia
-description: Navegación y arquitectura de información de la web — jerarquía de rutas, nav lateral/superior, breadcrumbs, estado activo, deep linking y URL como estado, menús que cambian por rol, y la regla de que ocultar una opción en el menú no autoriza nada. Usar al diseñar la estructura de navegación de un producto o sección, al agregar una ruta o un ítem de menú, al armar el nav de un rol nuevo (doctor, paciente, admin), o al revisar por qué los usuarios "no encuentran" una función.
+description: Navegación y arquitectura de información de la web — jerarquía de rutas, nav lateral/superior, breadcrumbs, estado activo, deep linking y URL como estado, menús que cambian por rol, y la regla de que ocultar una opción en el menú no autoriza nada. Usar al diseñar la estructura de navegación de un producto o sección, al agregar una ruta o un ítem de menú, al armar el nav de un rol nuevo (cliente, comercio, personal interno), o al revisar por qué los usuarios "no encuentran" una función.
 ---
 
 # Navegación y arquitectura de información
@@ -40,15 +40,15 @@ encuentra una función, para él no existe. La navegación es el mapa de ese mod
 
 ## 5. Menús por rol — pero la autorización es del backend
 
-- Distintos roles ven distintos menús (doctor, paciente, admin): mostrá solo lo que aplica a su rol.
+- Distintos roles ven distintos menús (cliente, comercio, personal interno): mostrá solo lo que aplica a su rol.
 - **Ocultar un ítem del menú NO es autorización.** El usuario puede escribir la URL a mano.
   Toda ruta protegida necesita su guard, y el endpoint detrás valida permiso y ownership
   (ver `authz-access-control`). Nunca "está seguro porque no hay botón".
 - El guard y el menú deben derivar de la misma fuente de roles/permisos para no divergir.
 
-```typescript
-// ✅ el guard protege la ruta; el menú solo la muestra u oculta — el backend igual valida
-export const canManageBilling: CanActivateFn = () => inject(Session).can('billing:manage');
+```ts
+// ✅ la guarda protege la ruta; el menú solo la muestra u oculta — el backend igual valida
+export const puedeGestionarFacturacion = (sesion: Sesion) => sesion.can('billing:manage');
 ```
 
 ## 6. Encontrabilidad

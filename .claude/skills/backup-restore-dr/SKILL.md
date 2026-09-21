@@ -9,7 +9,7 @@ effort: high
 
 Un backup que nunca se restauró no es un backup: es un archivo con esperanza. Esta skill no
 acepta "hay backups configurados" como estado; acepta "restauramos el de tal fecha en tanto
-tiempo y los datos verificaron". En un sistema con datos clínicos y contables, perderlos o no
+tiempo y los datos verificaron". En un sistema con datos de identidad y contables, perderlos o no
 poder recuperarlos a tiempo es un incidente mayor.
 
 ## 1. RPO y RTO: primero el número, después la herramienta

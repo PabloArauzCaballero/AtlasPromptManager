@@ -1,6 +1,6 @@
 ---
 name: caching-strategy
-description: Estrategia de caché para la API NestJS y sus clientes — qué cachear y qué NUNCA (datos clínicos compartidos, respuestas autorizadas por usuario), capas (HTTP con Cache-Control/ETag, aplicación, Redis), claves con tenant y usuario, invalidación por evento vs TTL, estampida, caché negativo, consistencia con el ORM y medición de hit ratio. Usar antes de agregar cualquier cache, al revisar un endpoint lento que "se arregla cacheando", al diseñar catálogos o directorios públicos de alto tráfico, y al diagnosticar datos viejos, respuestas de otro usuario o memoria que crece.
+description: Estrategia de caché para la API NestJS y sus clientes — qué cachear y qué NUNCA (datos sensibles compartidos, respuestas autorizadas por usuario), capas (HTTP con Cache-Control/ETag, aplicación, Redis), claves con tenant y usuario, invalidación por evento vs TTL, estampida, caché negativo, consistencia con el ORM y medición de hit ratio. Usar antes de agregar cualquier cache, al revisar un endpoint lento que "se arregla cacheando", al diseñar catálogos o directorios públicos de alto tráfico, y al diagnosticar datos viejos, respuestas de otro usuario o memoria que crece.
 ---
 
 # Estrategia de caché
@@ -14,7 +14,7 @@ alto, la lectura domina y **podés definir cuándo deja de ser válido**.
 
 | Dato | Regla |
 |---|---|
-| Respuestas de datos clínicos o PII | no en caché compartido; si hace falta, solo por usuario, TTL corto, cifrado en reposo, y `Cache-Control: no-store` hacia el cliente (`data-privacy-sensitive`) |
+| Respuestas con datos sensibles o PII | no en caché compartido; si hace falta, solo por usuario, TTL corto, cifrado en reposo, y `Cache-Control: no-store` hacia el cliente (`data-privacy-sensitive`) |
 | Cualquier respuesta **autorizada** (depende de quién pregunta) | clave incluye actor y tenant, o no se cachea; nunca en caché HTTP compartido (`private`) |
 | Decisiones de autorización, consentimiento, membresía | no se cachean, o con invalidación inmediata al revocar (`authz-access-control`, `data-privacy-sensitive`) |
 | Saldos, cupos de agenda, contadores que deciden una escritura | nunca: se leen en la transacción que decide (`concurrency-and-locking`) |
@@ -145,7 +145,7 @@ del store en `backend-observability`.
 ## Checklist
 
 - [ ] Medido antes: índice/query descartados como solución.
-- [ ] Nada clínico ni autorizado en caché compartido; `no-store`/`private` por defecto en rutas autenticadas.
+- [ ] Nada sensible ni autorizado en caché compartido; `no-store`/`private` por defecto en rutas autenticadas.
 - [ ] Clave con versión de esquema, tenant, recurso, actor si aplica y variantes normalizadas.
 - [ ] Invalidación elegida (TTL / evento / versión) con TTL de respaldo; post-commit.
 - [ ] Invalidación inmediata en revocaciones, cambio de rol/tenant, logout.

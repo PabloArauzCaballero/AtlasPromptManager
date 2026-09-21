@@ -58,7 +58,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule: { interval: "weekly" }
-  - package-ecosystem: "pub"            # Dart / Flutter
+  - package-ecosystem: "docker"         # imágenes base de los Dockerfiles
     directory: "/"
     schedule: { interval: "weekly" }
   - package-ecosystem: "github-actions"
@@ -101,7 +101,7 @@ updates:
 4. Prevención local: `.gitignore` para `.env*`, hooks de pre-commit con escáner de secretos,
    plantillas `.env.example` sin valores (`environment-secrets-config`).
 5. Un secreto **no** es solo una API key: connection strings, claves privadas, tokens de sesión,
-   dumps de base y capturas con datos de pacientes también son fuga.
+   dumps de base y capturas con datos de clientes también son fuga.
 
 ## 4. Code scanning y dependency review
 
