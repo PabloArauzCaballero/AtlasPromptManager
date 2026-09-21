@@ -102,7 +102,7 @@ tiene:
 - **Angular y Astro** (8): el frontend de Atlas es Next.js. Las convenciones del framework las fija
   el `CLAUDE.md` de cada repo; no hay skill de framework acá.
 - **Flutter** (4): la app es Expo/React Native. Quedaron las tres de mobile que no dependen del
-  framework (táctil, offline, publicación), con sus ejemplos de Flutter señalados en el router.
+  framework (táctil, offline, publicación), ya con sus ejemplos pasados a Expo.
 - **MikroORM** (1): Atlas usa Sequelize y Prisma. Los patrones de persistencia portables están en
   `database-design` y `concurrency-and-locking`.
 - **Dominio salud** (5) y **dominio Alovida** (4): registro clínico, recetas, FHIR, consentimiento
@@ -112,10 +112,18 @@ tiene:
 Atlas —documento de identidad, selfie, extracto bancario, ingresos, score— aunque no sea dato de
 salud.
 
-**Lo que sigue teniendo olor a salud:** varias skills conservan ejemplos del producto de origen
-(«paciente», «expediente clínico») en su prosa. Se dejaron a propósito: el criterio que enseñan es
-el mismo y reescribirlos entero sin verificarlos habría sido peor que dejarlos. Si uno confunde,
-corregilo con `prompt-governance-versioning`.
+**Los ejemplos están traducidos, no heredados.** Las 154 skills se pasaron al dominio de Atlas
+—cliente y comercio en vez de paciente y clínica, expediente en vez de ficha clínica, vigencia de
+tarifas y ciclo de la solicitud en vez de agenda de citas— y al stack real: React/Next.js en vez de
+Angular, Expo en vez de Flutter, el output `standalone` de Next en el Dockerfile y en el build pack
+de Coolify. Las tablas de ejemplo (máquina de estados, tabla de decisión, `EXCLUDE` de rangos,
+matriz de autorización) se reescribieron enteras.
+
+**Lo que falta:** cuatro skills siguen con el stack de origen —`atomic-design-components`,
+`css-architecture`, `frontend-motion` y `mobile-ux-design`—. Ya existen reescritas para Atlas fuera
+de este repo (`atlas-ui-componentes`, `atlas-estilo-portales`, `atlas-movimiento`,
+`atlas-app-movil-ux`), y publicarlas acá es una decisión pendiente porque describen rutas y valores
+internos del producto. Hasta que se decida, no las uses como guía de estilo.
 
 ## Estado
 
