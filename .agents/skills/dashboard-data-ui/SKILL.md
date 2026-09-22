@@ -77,7 +77,7 @@ El catálogo completo de estados y su redacción está en `frontend-ux-states`.
 - No distingas series solo por color: forma de punto, patrón, o etiqueta directa (daltonismo).
 - Contraste de la serie contra el fondo ≥ 3:1 (criterio 1.4.11).
 - Tooltips accesibles por teclado, no solo por hover.
-- Respetá `prefers-reduced-motion` en transiciones de datos (ver `frontend-motion`).
+- Respetá `prefers-reduced-motion` en transiciones de datos (ver `atlas-movimiento`).
 
 ## Anti-patrones
 

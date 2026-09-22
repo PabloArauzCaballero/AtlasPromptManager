@@ -66,7 +66,7 @@ for (const vp of viewports) {                       // los del proyecto
 ```
 
 1. Esperá a que la vista esté estable con una aserción web-first, nunca con esperas fijas.
-2. `reducedMotion: 'reduce'` evita capturar a mitad de una transición. Si lo que cambió es una animación, revisala aparte (`frontend-motion`).
+2. `reducedMotion: 'reduce'` evita capturar a mitad de una transición. Si lo que cambió es una animación, revisala aparte (`atlas-movimiento`).
 3. Estados difíciles de provocar (error, vacío, lento): forzalos interceptando la respuesta con `page.route`. Esto es válido para **evidencia visual de UI**; no cuenta como prueba del flujo real contra el backend — etiquetalo así.
 4. `fullPage: true` para layout de página; captura del elemento (`locator.screenshot()`) para componentes y overlays.
 5. Si el proyecto tema por clase/atributo en vez de `prefers-color-scheme`, activá el tema como lo hace el producto.
@@ -106,7 +106,8 @@ expect(problemas).toEqual([]);
 
 Registrá los listeners **antes** de navegar. Los 4xx/5xx que el escenario provoca a
 propósito (estado de error) se excluyen de forma explícita, no con un filtro general.
-En SSR, mirá también los avisos de hidratación de la consola.
+En los portales Next mirá también los avisos de hidratación en consola: el tema se escribe con
+un script en línea antes del primer pintado justo para no provocarlos.
 
 ## Anti-patrones
 
@@ -142,3 +143,18 @@ Si falta la inspección, el nivel alcanzado es **verificado funcionalmente**, y 
 - [ ] Consola y red sin errores inesperados.
 - [ ] Sin datos reales en las imágenes.
 - [ ] El nivel de afirmación del reporte coincide con la evidencia que tengo.
+
+## En Atlas
+
+- **Las capturas las produce la propia batería**: `e2e-web/humo.mjs --anchos 390,768,1280` (una por
+  ruta y ancho, con las llamadas al backend que salieron y su código) y `e2e-web/responsive.mjs`,
+  que además mide desborde horizontal, objetivos pequeños y texto diminuto. En los portales, con los
+  E2E de Playwright de cada repo.
+- **Anchos de la casa**: 390 (tiene que ser idéntico al teléfono), 768 y 1280 como mínimo; la matriz
+  completa llega a 13, de 320 a 2560.
+- **Temas**: la app del cliente es oscura de nacimiento; los portales hay que mirarlos en claro **y**
+  en oscuro.
+- **El build va en un worktree**: `expo export` escribe `dist/` y `next build` reemplaza `.next`; en
+  el árbol compartido tumbas el `dev` de otra sesión con chunks 404.
+- **Ningún verde vale sin mirar el contenido de lo que volvió.** Un 200 no es una pantalla correcta,
+  y una prueba que pulsa el botón que falta puede estar verde con la app rota.

@@ -130,10 +130,10 @@ existe en el backend y se prueba contra el backend, con un cliente HTTP, saltean
 
 Por módulo, mantené versionada una tabla **rol × recurso × acción** con la condición:
 
-| Recurso · acción | Anónimo | Paciente | Profesional | Admin org. |
+| Recurso · acción | Anónimo | Cliente | Analista | Admin org. |
 |---|---|---|---|---|
-| Cita · leer | ✗ | propia | donde es tratante | de su organización |
-| Cita · cancelar | ✗ | propia, si estado lo permite | propia agenda | ✗ |
+| Solicitud · leer | ✗ | propia | las de su cartera | de su organización |
+| Solicitud · cancelar | ✗ | propia, si el estado lo permite | las de su cartera | ✗ |
 
 - Cada celda no vacía es un test positivo; **cada ✗ y cada condición es un test negativo**.
 - La matriz se revisa en el PR junto con el código. Endpoint sin fila en la matriz = no mergea.

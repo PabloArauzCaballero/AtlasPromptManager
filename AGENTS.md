@@ -1,6 +1,6 @@
 # AGENTS.md — Estándar de trabajo de la empresa
 
-Este repo es el **estándar de ingeniería, diseño y operación de Atlas**: 154 skills, 14 reglas y
+Este repo es el **estándar de ingeniería, diseño y operación de Atlas**: 155 skills, 14 reglas y
 los candados que las hacen cumplir. Si sos un agente de IA trabajando en cualquier repo de Atlas
 —o un programador usando uno—, esto es lo que tenés que respetar, sin importar qué herramienta uses.
 
@@ -224,7 +224,7 @@ sesión.
 | Qué | Dónde |
 |---|---|
 | **Las 14 reglas completas** | [`.claude/rules/`](.claude/rules/) — empezá por [`README.md`](.claude/rules/README.md) |
-| **Catálogo de 154 skills** | [`.claude/skills/`](.claude/skills/) |
+| **Catálogo de 155 skills** | [`.claude/skills/`](.claude/skills/) |
 | **Índice de skills** | [`.claude/skills/skills-router/SKILL.md`](.claude/skills/skills-router/SKILL.md) |
 | **Espejo cross-tool** | [`.agents/skills/`](.agents/skills/) y [`.agents/rules/`](.agents/rules/) |
 | **Panorama del repo** | [`README.md`](README.md) |

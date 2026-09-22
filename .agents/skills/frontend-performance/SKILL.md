@@ -119,7 +119,7 @@ equivalente portable es el `import()` dinámico.
   escribir `style`, leer de nuevo) — cada lectura después de una escritura fuerza un
   reflow síncrono. Agrupá todas las lecturas, después todas las escrituras.
 - Animá `transform`/`opacity` en vez de propiedades que disparan layout (`top`, `left`,
-  `width`, `height`) — ver `frontend-motion` para el detalle de qué propiedades son
+  `width`, `height`) — ver `atlas-movimiento` para el detalle de qué propiedades son
   "baratas" para el compositor.
 - `requestAnimationFrame` para trabajo visual sincronizado con el frame, no `setTimeout`.
 

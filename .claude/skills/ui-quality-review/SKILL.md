@@ -86,3 +86,18 @@ No se aprueba con un bloqueante abierto. Adjuntá las capturas, no las describas
 - [ ] Cada hallazgo tiene severidad, ubicación y fix.
 - [ ] Los estados (vacío/carga/error/sin-permiso) existen y los vi (`frontend-ux-states`).
 - [ ] Veredicto con evidencia pegada (`visual-proof`).
+
+## En Atlas
+
+- **Las capturas se sacan de verdad y por ancho**: `e2e-web/humo.mjs` deja una por ruta y ancho, y
+  `e2e-web/responsive.mjs` mide lo que una captura no dice. En los portales, tema claro **y**
+  oscuro. Sin eso el veredicto no vale (`visual-proof`).
+- **El `grep` de valores sueltos** aquí tiene sitios concretos: literales hexadecimales o `px` en
+  `src/ui/` y en las pantallas de la app (deberían salir de `tokens.ts`), y colores añadidos al
+  `extend` de `tailwind.config.ts` de un portal (deberían venir de `theme.css` del Motor).
+- **Señales anti-slop ya encontradas en Atlas**, por si se repiten: `animation: … infinite` sin
+  causa; superficies quietas que se elevan al hover; especular blanco sobre un degradado, con grano
+  en `overlay` encima; el mismo dato contado de tres formas en la misma columna; varias maneras de
+  volver a un palmo de distancia; un aviso en ámbar nada más abrir la pantalla, antes de que nadie
+  pueda equivocarse; texto en pasado sobre algo que aún no ha ocurrido.
+- **Dimensión 5 (contraste) tiene gate propio** en el Motor: `theme-contrast.test.ts`.

@@ -35,7 +35,7 @@ cp    ../AtlasPromptManager/AGENTS.md ./
 cp -r ../AtlasPromptManager/.agents   ./   # solo si tu herramienta no lee .claude/
 
 # 3. Verificar que quedo instalado (pega esta salida en tu daily)
-ls .claude/skills | wc -l            # -> 154
+ls .claude/skills | wc -l            # -> 155
 ls .claude/rules/[0-9]*.md | wc -l   # -> 14  (mas el README, que no es una regla)
 python .claude/hooks/plan_gate.py --self-test    # -> 11 PASS, 0 FAIL
 ```

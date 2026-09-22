@@ -23,7 +23,7 @@ Complementa a `frontend-ux-states` (qué estado se muestra) y a `ux-clarity-usab
 ## 2. Botones y acciones
 
 - El botón nombra su acción, no "Aceptar/OK": `Guardar cambios`, `Enviar solicitud`,
-  `Eliminar cliente`. Al leer solo el botón se sabe qué va a pasar.
+  `Eliminar comercio`. Al leer solo el botón se sabe qué va a pasar.
 - Primera persona/impersonal consistente; verbo en infinitivo o imperativo, elegí uno.
 - El botón primario = la acción que la pantalla quiere; el secundario, en tono menor
   ("Cancelar" nunca compite visualmente con "Guardar").
@@ -93,3 +93,17 @@ culpa al usuario ni muestra el error crudo del backend.
 - [ ] Confirmación destructiva nombra objeto y consecuencia; el botón nombra la acción.
 - [ ] Un concepto = una palabra en todo el producto.
 - [ ] Copy como texto real y localizable, listo para i18n.
+
+## En Atlas
+
+- **El ERP habla en lenguaje de usuario.** Ni «backend», ni rutas, ni nombres de tabla. Un error del
+  servidor se traduce a qué hacer.
+- **Cada campo y cada opción llevan su «qué poner»**, y con ejemplo cuando el formato no es obvio.
+  `npm run check:field-help` falla si falta alguno: el texto de ayuda es parte del contrato.
+- **Los rótulos de botón nombran la acción** («Confirmar código», «Enviarme el código»,
+  «Verificar mi correo después»), y cambian cuando cambia lo que hacen —un botón que pone
+  «Enviarme el código» cuando el envío ya falló debería poner «Intentar de nuevo»—.
+- **Títulos y subtítulos en tiempo verbal honesto**: presente mientras ocurre, pasado sólo cuando ya
+  ocurrió.
+- El texto que ve el cliente final es de tú, corto y sin jerga financiera innecesaria; el del Motor y
+  el portal interno puede ser técnico, porque su lector lo es.

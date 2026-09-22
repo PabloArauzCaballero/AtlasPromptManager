@@ -86,8 +86,9 @@ export type Channel = (typeof CHANNELS)[number];
 
 ## 4. Tipos de marca (branded) para IDs y unidades
 
-Dos `string` son intercambiables para el compilador; un `PatientId` y un `DoctorId` no
-deberían serlo.
+Dos `string` son intercambiables para el compilador; un `ClienteId` y un `ComercioId` no
+deberían serlo. Pasó de verdad en Atlas: la comisión se guardaba con el uuid de otra entidad y
+`tsc` no vio nada, porque los dos eran `string`.
 
 ```typescript
 declare const brand: unique symbol;

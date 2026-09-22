@@ -146,3 +146,18 @@ mal alineado inventado en el momento de implementar.
 Complementá con `frontend-beautiful-ui` para el pulido visual, `frontend-design-system`
 para tokens y componentes reutilizables, y `frontend-ux-states`/`frontend-accessibility`
 para profundizar estados y accesibilidad.
+
+## En Atlas
+
+- **Los tokens ya existen**: `AtlasFrontend/apps/consumer-app/src/theme/tokens.ts` (app) y
+  `AtlasDecisionEngineFrontend/src/styles/parts/theme.css` (Motor, y de ahí los portales por el
+  remapeo de Tailwind). No se define una escala nueva: se usa la que hay. Ver `atlas-diseno`.
+- **La grilla de escritorio de la app** son 12 columnas a partir de `TRAMO.escritorio` (1024), con
+  `ANCHO_REJILLA` 1220 y la columna de formulario a 520 px. Está en `src/web/estilo.ts`; las
+  pantallas no la conocen.
+- **Los estados de los componentes ya están resueltos** en `src/ui/`: un botón trae `loading`,
+  `disabled` y el motivo de estarlo. Reimplementarlos es introducir un cuarto temperamento.
+- **Formularios**: rótulo siempre visible, ⓘ con «qué poner» en cada campo y cada opción —hay un
+  guardián, `npm run check:field-help`— y el error del campo sólo cuando ya hay algo escrito.
+- **Tablas** (portales): `DataTable` en `AtlasERPFrontend/components/ui`. Tabla primero, crear
+  arriba, operar en la fila; una pestaña es un sustantivo.

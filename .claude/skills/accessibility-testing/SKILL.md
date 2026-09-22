@@ -55,7 +55,7 @@ Probá el flujo crítico con un lector real (NVDA/JAWS en Windows, VoiceOver en 
 ## 5. Verificaciones puntuales
 - **Contraste**: 4.5:1 texto normal, 3:1 texto grande y componentes/gráficos (SC 1.4.3 y 1.4.11).
 - **Tamaño de objetivo**: 24×24 px CSS mínimo (WCAG 2.2 SC 2.5.8) salvo excepciones.
-- **Reduced motion**: con `prefers-reduced-motion` la animación se reduce/elimina (ver `frontend-motion`).
+- **Reduced motion**: con `prefers-reduced-motion` la animación se reduce/elimina (ver `atlas-movimiento`).
 - **Zoom 200%** sin pérdida de contenido ni scroll horizontal (ver `frontend-responsive-layout`).
 (Verificá los números de criterio contra la doc oficial de WCAG 2.2 si actualizás versión.)
 

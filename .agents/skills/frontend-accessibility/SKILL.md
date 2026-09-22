@@ -101,7 +101,7 @@ ARIA mal aplicada es peor que no tener ARIA: puede sobreescribir la semántica n
 ## 8. Movimiento y medios
 
 - Respetá `prefers-reduced-motion: reduce`: desactivá o reducí animaciones no esenciales
-  (parallax, autoplay de carruseles, transiciones grandes). Ver `frontend-motion` para
+  (parallax, autoplay de carruseles, transiciones grandes). Ver `atlas-movimiento` para
   cómo estructurar la animación en sí.
 - Nada parpadea más de 3 veces por segundo (SC 2.3.1) — riesgo de convulsiones.
 - Imágenes con `alt` que describe función/contenido (`alt=""` explícito si es decorativa).
@@ -141,3 +141,18 @@ No declares "accesible" sin esto pegado (salida literal, no resumida):
 - [ ] Labels reales en formularios; errores asociados y anunciados.
 - [ ] `prefers-reduced-motion` respetado; nada parpadea >3 veces/seg.
 - [ ] Auditoría axe/Lighthouse + pasada de lector de pantalla registradas como evidencia.
+
+## En Atlas
+
+- **El contraste tiene gate**: `theme-contrast.test.ts` en el Motor (4,5:1 contra la peor
+  superficie). En la app, `border.field` existe por WCAG 1.4.11: el contorno de un control tiene que
+  llegar a 3:1, y con `border.subtle` daba 1,3:1.
+- **Objetivo táctil 24×24 como mínimo (2.5.8)** y 48 como criterio de la casa (`touch.minSize`).
+  Ojo: `hitSlop` **no existe** en react-native-web, así que en la web va `toqueWeb()`/`data-toque`.
+  `e2e-web/responsive.mjs` falla si algo visible queda por debajo.
+- **Foco visible siempre**, y UN solo anillo por control: el contorno general se dibujaba también
+  sobre el `input` dentro de la caja del campo y salían dos rectángulos concéntricos.
+- **Nombre accesible en todo lo tocable**: las casillas del PIN estuvieron mudas y ni VoiceOver ni
+  las pruebas encontraban dónde escribir.
+- Los portales tienen `axe` en sus E2E; hay una trampa conocida: no medir durante la animación de
+  apertura de un diálogo.

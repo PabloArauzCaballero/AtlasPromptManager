@@ -121,3 +121,18 @@ faltan al menos vacío, error y sin permiso.
 - [ ] ¿Los mensajes de error son legibles por un humano y accionables?
 - [ ] ¿Las acciones destructivas piden confirmación o dan undo, según su costo real de deshacer?
 - [ ] ¿El feedback usa el canal correcto (toast/inline/modal) para su nivel de importancia?
+
+## En Atlas
+
+- **Las piezas ya existen** en la app: `Skeleton`, `EmptyState`, `ErrorState`, y `ScreenState` /
+  `PageSkeleton` / `BackendGap` en el ERP. No se pintan a mano.
+- **`describeError` traduce el error del servidor** a título, detalle, referencia y opciones de
+  recuperación. Una pantalla que compone su propio mensaje se queda sin la referencia, que es lo que
+  permite encontrar la petición después.
+- **`sinPantalla` para lo auxiliar**: si una consulta de apoyo falla y no impide seguir, no merece
+  una pantalla de error —se cae a un respaldo y punto—.
+- **Hay estados que sólo se ven en un entorno**: en TEST los portales van por HTTP plano (sin
+  contexto seguro: sin cámara, sin `crypto.subtle`), y el worker de PDF no está desplegado en dev.
+  Eso no es un fallo de la pantalla, pero la pantalla tiene que decirlo.
+- **Un 409 no siempre es un error para la persona**: «ya te mandamos el código hace un momento»
+  significa que lo tiene, no que algo se rompió.

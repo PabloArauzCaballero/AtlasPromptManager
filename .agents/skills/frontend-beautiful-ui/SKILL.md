@@ -102,7 +102,7 @@ Una sombra realista nunca es un solo `box-shadow`: la luz genera una sombra de c
   llegar el dato.
 - Feedback inmediato en cada acción disparada por el usuario (click, submit, drag) —
   óptimista cuando el resultado es predecible, con estado de carga visible cuando no.
-  Profundizá timing y easing en `frontend-motion`.
+  Profundizá timing y easing en `atlas-movimiento`.
 - El cursor y el estado de hover comunican affordance: si algo es clickeable, se nota
   antes de hacer click (cambio de fondo, elevación, cursor pointer).
 
@@ -133,3 +133,17 @@ Una sombra realista nunca es un solo `box-shadow`: la luz genera una sombra de c
 - [ ] Dark mode con superficies más claras (no sombras) para indicar elevación.
 - [ ] Todo estado vacío tiene explicación + acción; todo loading respeta el layout final.
 - [ ] Ningún patrón de la lista anti-slop presente sin justificación consciente.
+
+## En Atlas
+
+- **Elevación**: `shadow` en `tokens.ts` (la sombra de tarjeta es profunda y muy difusa, como
+  `--sh` de la identidad publicada: una sombra corta y dura no se ve sobre fondo oscuro). En los
+  portales la profundidad la lleva el **borde**, no la sombra: superficies planas y trazos finos.
+- **Radios**: `radius` en `tokens.ts`; el radio de lo anidado es menor que el del contenedor.
+- **Oscuro**: la app es oscura de nacimiento (`palette.bg` `#061426`); los portales tienen tema
+  claro y oscuro con partes propias (`theme-dark-*.css`), no colores invertidos.
+- **Cifras tabulares** en todo lo que cambia en su sitio: cuentas atrás, importes, columnas de
+  números. Sin ellas el bloque se ensancha y se encoge en cada tic.
+- **Lo que en Atlas se lee como «plástico»**, ya medido: destellos en bucle infinito, objetos que se
+  mecen solos, tarjetas que se levantan al pasar el puntero, especulares blancos sobre un degradado
+  y grano en `overlay` encima. Ver `atlas-movimiento`.

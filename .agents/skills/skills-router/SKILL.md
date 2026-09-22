@@ -71,16 +71,20 @@ ubicación y cercanía → `maps-geolocation`
 | Script o generador Python | `python-tooling-standards` |
 
 ### Frontend web
+> **Entrá por `atlas-diseno`**: dice cuál de los tres subsistemas visuales de Atlas estás tocando
+> (los tokens CSS del Motor y su remapeo a Tailwind en los portales, `tokens.ts` de la app, la capa
+> web de la app) y qué gate mide cada cosa.
+>
 > No hay skill de framework. Las convenciones de Next.js/React de cada repo (App Router, server vs
 > client components, dónde vive el fetch, qué runtime) las fija el `CLAUDE.md` de ese repo, y
-> **mandan sobre lo que diga cualquier skill de acá**. Lo de abajo es lo que no cambia con el
-> framework.
+> **mandan sobre lo que diga cualquier skill de acá**.
 
 | Situación | Skills |
 |---|---|
-| Crear un componente | `atomic-design-components` → `component-architecture-solid` |
+| Cualquier trabajo visual — empezá acá | `atlas-diseno` |
+| Crear un componente | `atlas-ui-componentes` → `component-architecture-solid` |
+| Color, clase, CSS de un portal | `atlas-estilo-portales` |
 | Formulario | `frontend-forms-ux` |
-| Estilos | `css-architecture` · `frontend-design-system` |
 | Estados de la vista (carga, vacío, error) | `frontend-ux-states` |
 | Landing / páginas públicas | `seo-public-pages` |
 
@@ -88,12 +92,12 @@ ubicación y cercanía → `maps-geolocation`
 | Situación | Skills |
 |---|---|
 | Arrancar una pantalla | `frontend-ui-design` → `visual-hierarchy-composition` |
-| Tokens, paleta, tipografía | `frontend-design-system` · `color-systems` · `typography-systems` |
+| Tokens, paleta, tipografía | `atlas-diseno` → `frontend-design-system` · `color-systems` · `typography-systems` |
 | Pulido final / "se ve genérica" | `frontend-beautiful-ui` → `ui-quality-review` (gate) |
 | ¿Se entiende? | `ux-clarity-usability` · `ux-writing-microcopy` |
 | Estados de la vista | `frontend-ux-states` |
 | Responsive | `frontend-responsive-layout` |
-| Animación | `frontend-motion` |
+| Animación | `atlas-movimiento` |
 | Accesibilidad | `frontend-accessibility` (diseño) + `accessibility-testing` (prueba) |
 | Tablas, dashboards, iconos | `frontend-data-tables` · `dashboard-data-ui` · `iconography-imagery` |
 | Navegación | `frontend-navigation-ia` |
@@ -102,11 +106,12 @@ ubicación y cercanía → `maps-geolocation`
 | Segundo idioma | `frontend-i18n-l10n` |
 
 ### Mobile
-`mobile-ux-design` · `mobile-offline-sync` · `mobile-release-security`
+`atlas-app-movil-ux` (la app del cliente: Expo, expo-router, y la misma base servida en el
+navegador) · `mobile-offline-sync` · `mobile-release-security`
 
-> Estas tres vienen del catálogo original, escrito sobre Flutter, y quedaron por el criterio que
-> cubren (táctil, offline, publicación en tiendas), no por sus ejemplos. Donde nombran un paquete
-> de Flutter, el equivalente en Expo/React Native lo fija el `CLAUDE.md` de la app.
+> `atlas-app-movil-ux` está escrita contra la app real. Las otras dos vienen del catálogo original
+> con sus ejemplos ya pasados a Expo, pero lo concreto de cada paquete lo fija el `CLAUDE.md` de
+> la app.
 
 ### QA y testing
 | Situación | Skills |

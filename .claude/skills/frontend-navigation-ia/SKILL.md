@@ -11,7 +11,9 @@ encuentra una función, para él no existe. La navegación es el mapa de ese mod
 ## 1. Jerarquía de rutas
 
 - Estructurá las rutas según el modelo mental del usuario, no según cómo está partido el backend.
-- Rutas lazy por sección, con guardas de acceso.
+- Rutas por sección con su guarda de acceso: en la app del cliente, los grupos de `expo-router`
+  (`(public)`, `(auth)`, `(onboarding)`, `(app)`) con la redirección en el `_layout`; en los
+  portales, el App Router de Next.
 - Profundidad moderada: si el usuario necesita 5 clics para una tarea frecuente, la IA está mal.
 - Agrupá por tarea/rol, no por tipo técnico de pantalla.
 
@@ -35,20 +37,22 @@ encuentra una función, para él no existe. La navegación es el mapa de ese mod
 
 - La URL refleja el estado navegable: filtros, tab activa, página/cursor, id del recurso. Así
   el usuario puede compartir el enlace, recargar y usar atrás/adelante del navegador.
-- Estado efímero de UI (un dropdown abierto) no va en la URL; estado navegable, sí.
+- Estado efímero de UI (un dropdown abierto) no va en la URL; estado navegable, sí (ver
+  la URL es el estado, no una copia de él).
 - Deep links a recursos concretos deben funcionar al pegarlos en frío (con el guard resolviendo auth).
 
 ## 5. Menús por rol — pero la autorización es del backend
 
-- Distintos roles ven distintos menús (cliente, comercio, personal interno): mostrá solo lo que aplica a su rol.
+- Distintos roles ven distintos menús (cliente, comercio, personal interno): mostrá solo lo que
+  aplica a su rol.
 - **Ocultar un ítem del menú NO es autorización.** El usuario puede escribir la URL a mano.
   Toda ruta protegida necesita su guard, y el endpoint detrás valida permiso y ownership
   (ver `authz-access-control`). Nunca "está seguro porque no hay botón".
 - El guard y el menú deben derivar de la misma fuente de roles/permisos para no divergir.
 
-```ts
-// ✅ la guarda protege la ruta; el menú solo la muestra u oculta — el backend igual valida
-export const puedeGestionarFacturacion = (sesion: Sesion) => sesion.can('billing:manage');
+```typescript
+// ✅ el guard protege la ruta; el menú solo la muestra u oculta — el backend igual valida
+export const canManageBilling: CanActivateFn = () => inject(Session).can('billing:manage');
 ```
 
 ## 6. Encontrabilidad
@@ -73,3 +77,18 @@ export const puedeGestionarFacturacion = (sesion: Sesion) => sesion.can('billing
 - [ ] Filtros/tab/cursor en la URL; deep links funcionan en frío.
 - [ ] Menú por rol, pero cada ruta con guard y cada endpoint validando permiso.
 - [ ] Menú y guard derivan de la misma fuente de permisos.
+
+## En Atlas
+
+- **La app del cliente usa grupos de `expo-router`**: `(public)`, `(auth)`, `(onboarding)`, `(app)`,
+  con la guarda en cada `_layout` y variantes `.web.tsx` para la composición de escritorio. Los
+  portales usan el App Router de Next.
+- **La URL es el estado** de la pantalla; la vuelta atrás del navegador tiene que funcionar.
+- **Una sola forma de volver por pantalla.** El botón de `ScreenHeader` (`onBack="auto"`) es el que
+  sabe volver al paso anterior; la marca lleva a la portada. Tres puertas a un palmo no dan
+  libertad, dan que pensar.
+- **Ocultar una opción del menú no autoriza nada**: el permiso se comprueba en el servidor. En el
+  portal interno, además, un permiso nuevo de `internal-rbac.*` necesita su migración de catálogo o
+  el endpoint responde 403 en todos los entornos aunque el código lo declare.
+- **El menú del comercio se redujo de 12 entradas a 5** a propósito: una pestaña es un sustantivo, y
+  más opciones visibles a la vez es más tiempo de decisión.

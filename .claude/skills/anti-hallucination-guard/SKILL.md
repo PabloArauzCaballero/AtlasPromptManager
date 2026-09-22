@@ -32,8 +32,8 @@ Si existe algo equivalente: **reusalo o extendelo**. Si hay dos implementaciones
 coherente con los patrones ya presentes (ver `native-code-patterns`) y dejá la evidencia. Si no hay
 patrón, registrá la decisión técnica con alcance mínimo (ver `technical-docs-and-adr`).
 
-❌ Crear `DoctorScheduleDto` porque "hace falta uno" → ya existía `AvailabilitySlotDto` usado por tres endpoints.
-✅ "Busqué `schedule|availability|horario|agenda` en `src/**/dto` y en el OpenAPI: existe `AvailabilitySlotDto` (`ruta:línea`). Lo extiendo con `breakMinutes`."
+❌ Crear `ComercioTarifaDto` porque "hace falta uno" → ya existía `TarifaVigenteDto` usado por tres endpoints.
+✅ "Busqué `tarifa|comision|mdr|rate` en `src/**/dto` y en el OpenAPI: existe `TarifaVigenteDto` (`ruta:línea`). Lo extiendo con `vigenteHasta`."
 
 ## 2. Prioridad de fuentes de evidencia
 

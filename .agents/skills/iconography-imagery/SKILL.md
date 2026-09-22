@@ -69,7 +69,7 @@ Las imágenes suelen ser el mayor peso de una página y golpean el LCP (ver `fro
   anuncie el lector). No pongas "imagen de …" en el alt.
 
 ```html
-<img src="perfil.avif" width="96" height="96"
+<img src="comercio.avif" width="96" height="96"
      alt="Foto de perfil de la Dra. Salinas" loading="lazy">
 ```
 
@@ -108,3 +108,17 @@ horneados en el JPG.
 
 Nombres accesibles y foco: `frontend-accessibility`. Peso y LCP: `frontend-performance`.
 Empty states: `frontend-ux-states`. Coherencia visual: `frontend-beautiful-ui`.
+
+## En Atlas
+
+- **Un solo juego de iconos, propio**: `src/ui/icons.tsx` en la app (más de cuarenta, dibujados con
+  `Path` de trazo, mismo grosor y misma rejilla de 24). Nada de emojis como icono, ni de mezclar
+  otro set. Si falta uno, se añade ahí con el mismo trazo.
+- Un icono nunca va solo si la acción no es obvia: `IconChip` y `CardHeader` lo acompañan de texto,
+  y todo lo tocable lleva `accessibilityLabel`.
+- **Los medios con PII no van por URL pública**: las imágenes de revisión del Motor se traen
+  autenticadas por `fetch`→`blob`. Es una regla, no una optimización.
+- **Ilustración y estado vacío**: `EmptyState` de `src/ui/primitives.tsx`; un vacío dice qué hacer,
+  no sólo que no hay nada.
+- **El logotipo es una fuente y cinco copias**: al cambiarlo hay que propagarlo a los cinco
+  frontends, no retocar uno.

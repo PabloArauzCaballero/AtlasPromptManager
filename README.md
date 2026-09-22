@@ -11,7 +11,7 @@ comprobarlo** y **qué evidencia hace falta** para poder afirmar que está hecho
 concreta (arrancar una tarea, tocar un endpoint, diseñar una pantalla, desplegar, cerrar un carril)
 a la skill que hay que cargar, y fija la precedencia cuando dos se contradicen.
 
-Con 154 skills, leer el catálogo entero no sirve. El router sí.
+Con 155 skills, leer el catálogo entero no sirve. El router sí.
 
 ## Cómo se usa
 
@@ -27,7 +27,7 @@ Queda un **espejo generado** —cada archivo lleva su aviso— y un manifiesto
 `.claude/estandar-instalado.json` con lo que este repositorio puso ahí. Ese manifiesto es lo que
 permite retirar después una skill que acá se elimine **sin tocar lo que el repo tenga de propio**:
 `AtlasBackend`, por ejemplo, tiene nueve skills suyas (`graphify`, `backend-hardening`…) que
-conviven con estas 154.
+conviven con estas 155.
 
 Espejo y no symlink por el mismo motivo que documenta `sync_agents.py`: en Windows los enlaces piden
 privilegios y git los maneja distinto según la plataforma, y tres de las cuatro estaciones son
@@ -71,8 +71,8 @@ Tres de cuatro son Windows: un script escrito en la MacBook y corrido en una Leg
 | **Oficio de este repo** | 8 | Escribir skills, prompts, evals, subagentes, hooks, gobernanza. El manual de su propio producto. |
 | **Backend** | 20 | Arquitectura, NestJS, PostgreSQL, concurrencia, errores, auth, multi-tenancy, colas, jobs, caché, notificaciones, archivos, búsqueda, tiempo real, mapas, observabilidad. |
 | **Datos y modelo** | 9 | Esquema dirigido por modelo, PlantUML, catálogos cerrados, seeds con procedencia, calidad, auditoría, backups, tooling Python. |
-| **Frontend y diseño** | 27 | Componentes, CSS, sistema de diseño, color, tipografía, jerarquía visual, calidad UI, UX, estados, formularios, responsive, accesibilidad, performance, i18n, SEO, prueba visual. |
-| **Mobile** | 3 | UX táctil, offline y sincronización, seguridad y publicación en tiendas. |
+| **Frontend y diseño** | 28 | El sistema visual de Atlas y sus tres subsistemas (`atlas-diseno`, `atlas-ui-componentes`, `atlas-estilo-portales`, `atlas-movimiento`), más componentes, color, tipografía, jerarquía visual, calidad UI, UX, estados, formularios, responsive, accesibilidad, performance, i18n, SEO, prueba visual. |
+| **Mobile** | 3 | UX de la app del cliente (`atlas-app-movil-ux`), offline y sincronización, seguridad y publicación en tiendas. |
 | **QA** | 20 | Estrategia, orquestación, unitarios, API, integridad, E2E, visual, carga, triage, datos sintéticos, casos límite, exploratorio, UAT, evidencia. |
 | **Seguridad** | 13 | Guardrails, threat modeling, privacidad de datos personales, cumplimiento, revisión con lente de seguridad, evaluación sobre sistemas propios, reporte y remediación. |
 | **Dominio negocio** | 2 | Partida doble y facturación. |
@@ -112,18 +112,20 @@ tiene:
 Atlas —documento de identidad, selfie, extracto bancario, ingresos, score— aunque no sea dato de
 salud.
 
-**Los ejemplos están traducidos, no heredados.** Las 154 skills se pasaron al dominio de Atlas
+**Los ejemplos están traducidos, no heredados.** Las skills se pasaron al dominio de Atlas
 —cliente y comercio en vez de paciente y clínica, expediente en vez de ficha clínica, vigencia de
 tarifas y ciclo de la solicitud en vez de agenda de citas— y al stack real: React/Next.js en vez de
 Angular, Expo en vez de Flutter, el output `standalone` de Next en el Dockerfile y en el build pack
 de Coolify. Las tablas de ejemplo (máquina de estados, tabla de decisión, `EXCLUDE` de rangos,
 matriz de autorización) se reescribieron enteras.
 
-**Lo que falta:** cuatro skills siguen con el stack de origen —`atomic-design-components`,
-`css-architecture`, `frontend-motion` y `mobile-ux-design`—. Ya existen reescritas para Atlas fuera
-de este repo (`atlas-ui-componentes`, `atlas-estilo-portales`, `atlas-movimiento`,
-`atlas-app-movil-ux`), y publicarlas acá es una decisión pendiente porque describen rutas y valores
-internos del producto. Hasta que se decida, no las uses como guía de estilo.
+**Cinco skills no vienen de ahí: son de Atlas.** `atlas-diseno`, `atlas-ui-componentes`,
+`atlas-estilo-portales`, `atlas-movimiento` y `atlas-app-movil-ux` están escritas contra el código
+real —`theme.css` del Motor, `tokens.ts` de la app, las 132 partes CSS, los gates de contraste y
+responsive— y **sustituyen** a las cuatro del catálogo original que enseñaban otro stack
+(`atomic-design-components`, `css-architecture`, `frontend-motion`, `mobile-ux-design`), que no se
+portaron. Las 16 genéricas de diseño llevan además un bloque «## En Atlas» que las ata a los
+archivos y gates de verdad.
 
 ## Estado
 

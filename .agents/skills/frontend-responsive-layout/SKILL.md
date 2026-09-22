@@ -163,3 +163,18 @@ Probá cada pantalla tocada en, como mínimo:
 - [ ] Imágenes con `srcset`/`sizes` y `width`/`height` o `aspect-ratio` reservado.
 - [ ] Targets táctiles ≥24×24px; safe areas respetados en elementos fijos a bordes.
 - [ ] Probado en la matriz de anchos mínima, incluido zoom de texto 200%.
+
+## En Atlas
+
+- **Los cortes tienen nombre y motivo** en `src/ui/responsive.ts`: `TRAMO.tableta` 600 (deja de ser
+  un teléfono), `panelLateral` 940 (cabe la segunda columna del acceso), `escritorio` 1024 (cabe el
+  carril de navegación). `ANCHO_REJILLA` 1220, `ANCHO_CARRIL` 220. Si cambian ahí, cambian en
+  `estilo.ts`.
+- **A 390 px la web ES la app.** Todo lo de escritorio va detrás de `@media (min-width:600px)`.
+- **La adaptación no se escribe en la pantalla**: va en `src/web/estilo.ts`, enganchada por
+  atributos `data-atlas`.
+- **Hay una batería que lo mide**: `e2e-web/responsive.mjs` recorre las rutas en 13 anchos y falla
+  por desborde horizontal, elementos que asoman sin ancestro que los recorte, controles visibles por
+  debajo de 24×24 y texto por debajo de 11 px. `--apaisado` para ventanas bajas.
+- Trampa medida: `flex-1` es base 0 y se come todo el déficit; el suelo va en `min-width`, y
+  `overflow-hidden` esconde el síntoma en vez de arreglarlo.

@@ -35,7 +35,7 @@ No se puede mapear lo que no se conoce. Por cada flujo que toque datos personale
 | Tratamiento | «Evaluación de capacidad de pago» |
 | Finalidad | Prestación del servicio de salud |
 | Categorías de datos | Identificación, contacto, dato financiero (ingresos, deuda, score) |
-| Categorías de titulares | Pacientes, profesionales |
+| Categorías de titulares | Clientes, representantes de comercios |
 | Origen | Titular; profesional; integración X |
 | Destinatarios | Profesional tratante, organización, proveedor de email |
 | Transferencias a terceros / otro país | Proveedor de correo (país, contrato) |

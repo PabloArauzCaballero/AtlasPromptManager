@@ -6,7 +6,7 @@ fácil.
 
 ## 95.1 Reutilización antes que creación
 
-1. **Antes de crear cualquier componente, buscá el existente.** Ver `atomic-design-components`.
+1. **Antes de crear cualquier componente, buscá el existente.** Ver `atlas-ui-componentes`.
    Crear un duplicado porque no buscaste es un defecto, no un descuido.
 2. **Reusá los componentes compuestos existentes** (moléculas y organismos) antes de armar uno
    nuevo con piezas sueltas.
@@ -15,7 +15,7 @@ fácil.
 4. **Prohibido introducir una librería de UI o de estilos nueva** sin decisión registrada
    (ver `technical-docs-and-adr`). El stack de estilos lo fija el `CLAUDE.md` del proyecto.
 5. **Prohibido escribir valores literales** de color, espaciado, radio o tipografía. Se usan los
-   tokens del sistema. Ver `frontend-design-system` y `css-architecture`.
+   tokens del sistema. Ver `frontend-design-system` y `atlas-estilo-portales`.
 6. Un componente que trae datos y los pinta a la vez está mal repartido: separá contenedor de
    presentacional. Ver `component-architecture-solid`.
 
@@ -62,7 +62,7 @@ fácil.
 3. **Prohibido animar propiedades que provocan recálculo de layout** cuando existe alternativa.
 4. **Si el producto tiene modo claro y oscuro, todo componente nuevo funciona en los dos.**
    Entregar solo uno es trabajo incompleto.
-5. Ver `frontend-motion`.
+5. Ver `atlas-movimiento`.
 
 ## 95.6 Seguridad en el cliente
 
@@ -87,8 +87,8 @@ fácil.
 
 ## 95.8 Skills relacionadas
 
-`atomic-design-components` · `component-architecture-solid` ·
-`frontend-design-system` · `css-architecture` · `frontend-ux-states` · `frontend-forms-ux` ·
+`atlas-ui-componentes` · `component-architecture-solid` ·
+`frontend-design-system` · `atlas-estilo-portales` · `frontend-ux-states` · `frontend-forms-ux` ·
 `frontend-accessibility` · `frontend-responsive-layout` · `frontend-data-tables` ·
-`frontend-motion` · `frontend-security` · `frontend-error-monitoring` · `ui-quality-review` ·
+`atlas-movimiento` · `frontend-security` · `frontend-error-monitoring` · `ui-quality-review` ·
 `visual-proof`

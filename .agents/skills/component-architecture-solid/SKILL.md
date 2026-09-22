@@ -9,7 +9,7 @@ SOLID no es solo para clases de backend: un componente **es** una unidad con un
 contrato público (inputs/outputs/slots). Los mismos cinco principios deciden si ese
 contrato envejece bien o se pudre. Este es el nivel de diseño; el nivel de nombres y
 funciones lo cubre `clean-code`, el catálogo de principios puros `solid-principles`, y la
-ubicación por nivel `atomic-design-components`.
+ubicación por nivel `atlas-ui-componentes`.
 
 ## Cada nivel atómico tiene su responsabilidad (mapa SOLID)
 
@@ -159,6 +159,6 @@ reciben todo por props. DIP aplica sobre todo a los contenedores.
 - [ ] Toda variante respeta el mismo contrato de inputs/outputs (LSP).
 - [ ] Inputs mínimos, cohesivos y con variantes cerradas; nada de banderas de apariencia (ISP).
 - [ ] Las dependencias reales entran por abstracción inyectada; lo presentacional no inyecta datos (DIP).
-- [ ] La responsabilidad vive en el nivel atómico correcto (`atomic-design-components`).
+- [ ] La responsabilidad vive en el nivel atómico correcto (`atlas-ui-componentes`).
 - [ ] La división estado/presentación es explícita: el contenedor trae datos y orquesta; el
       presentacional solo recibe props y emite eventos.

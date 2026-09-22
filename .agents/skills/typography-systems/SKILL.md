@@ -131,3 +131,17 @@ La fuente entra en la ruta crítica del render y afecta LCP y CLS (ver `frontend
 Escalas como tokens: `frontend-design-system`. Aplicación en composición: `frontend-ui-design`,
 `frontend-beautiful-ui`. Impacto en carga: `frontend-performance`. Formato numérico y locale:
 `frontend-i18n-l10n`.
+
+## En Atlas
+
+- **Dos familias, y cada una con su trabajo**: **Sora** para display (`displaySemi`, `displayBold`,
+  `displayBlack`) y **Manrope** para interfaz y cuerpo (`bodyRegular`…`bodyBlack`). No hay una
+  tercera.
+- **La escala es `type` en `tokens.ts`**, con su tracking ya calculado por tamaño: `display` 38/44,
+  `hero` 32/38, `h1` 25/31, `h2` 20/26, `h3` 17/23, `title` 15/20, y el cuerpo con su interlineado
+  suelto. Una pantalla no escribe `fontSize`.
+- **El contraste de familia tiene una excepción documentada**: `title` va en Manrope Bold porque una
+  fila no encabeza nada, y ahí el cambio de familia sobraba.
+- **En la web** la escala se vuelve fluida con `clamp()` sobre las mismas variantes
+  (`[data-variant="h1"]`… en `src/web/estilo.ts`), no con tamaños nuevos.
+- **Cifras tabulares** en cuentas atrás, importes y columnas numéricas.

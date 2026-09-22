@@ -126,3 +126,17 @@ nada destaca y aparece el look genérico. Un solo acento bien puesto > cinco col
 
 Tokens y theming: `frontend-design-system`. Uso del color en composición: `frontend-ui-design`
 y `frontend-beautiful-ui`. Verificación de contraste con herramientas: `frontend-accessibility`.
+
+## En Atlas
+
+- **La fuente de verdad es `theme.css` del Motor** para los portales y `tokens.ts` para la app.
+  Ningún literal hexadecimal en un componente ni en una pantalla.
+- **Los grises son neutros a propósito.** Estuvieron tintados de azul y eso daba dos temperaturas
+  peleándose con el acento verde: la interfaz se leía «coloreada» sin que nadie eligiera un color.
+  En una consola el color es señal.
+- **El acento no se usa como fondo grande.** `--accent-soft` era un menta luminoso que pintaba el
+  fondo de la navegación activa y de las pestañas —una mancha saturada del tamaño de un botón—;
+  ahora es un tinte y quien lleva el color es la letra.
+- **Está medido, no revisado a ojo**: `theme-contrast.test.ts`. `--faint` es `#6b6b75` porque mide
+  4,63:1 en la peor superficie, y `text3` de la app es `#7489A6` por el mismo motivo (5,2:1).
+- **Contorno de control ≠ separador**: `border.field` 34 % vs `border.subtle` 9 %.

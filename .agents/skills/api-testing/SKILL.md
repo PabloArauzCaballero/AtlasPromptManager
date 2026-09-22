@@ -82,7 +82,7 @@ it.each([
   const req = request(app.getHttpServer()).patch(`/records/${recordDeAnalistaA}`).send(patch);
   if (token) req.set('Authorization', `Bearer ${token}`);
   await req.expect(status);
-  expect(await readRecord(recordOfDoctorA)).toEqual(original);   // no cambió NADA
+  expect(await readRecord(recordDeAnalistaA)).toEqual(original);   // no cambió NADA
 });
 ```
 

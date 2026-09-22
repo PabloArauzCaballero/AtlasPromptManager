@@ -24,7 +24,7 @@ claro en la UI).
 - Patrón cache-then-network: mostrá lo cacheado al instante y refrescá desde el servidor si hay red;
   si no hay, quedate con la caché y marcala como "sin conexión / actualizado hace X".
 - Nunca pantalla en blanco por falta de red: si hay caché, mostrala; si no, estado offline explícito
-  con reintento (ver `mobile-ux-design`, `frontend-ux-states`).
+  con reintento (ver `atlas-app-movil-ux`, `frontend-ux-states`).
 
 ## 3. Escritura diferida — cola de operaciones
 

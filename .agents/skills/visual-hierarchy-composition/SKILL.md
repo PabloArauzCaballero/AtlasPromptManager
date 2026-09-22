@@ -85,3 +85,18 @@ real. Si destaca lo que no debía, corregí.
 - [ ] Grupos separados por más espacio del que tienen adentro (proximidad).
 - [ ] Todo alineado a la grilla; espaciado por tokens, no valores sueltos.
 - [ ] La densidad corresponde al tipo de vista.
+
+## En Atlas
+
+- **Una acción primaria por pantalla.** En la app la lleva el pie de `Screen`: el `Button` primario
+  va con el degradado de marca y su halo, y el halo se reserva a esa variante —si dos elementos de
+  la pantalla brillan, no brilla ninguno—.
+- **Densidad por producto**: la app del cliente es baja (un paso a la vez, mucho aire); el ERP y el
+  Motor son herramientas densas donde se pasan turnos enteros, y ahí la agrupación y la alineación
+  pesan más que el aire.
+- **El panel de apoyo acompaña, no compite.** El de acceso/registro de la web llegó a apilar seis
+  bloques —tarjeta, cita, autor, pasos, chips y cifras— al lado de un formulario: el panel pesaba
+  más que lo único que había que hacer en esa pantalla.
+- **La escala tipográfica ya separa los niveles**: `display`/`hero`/`h1` en Sora ExtraBold,
+  `h2`/`h3` en Sora Bold, `title` en Manrope Bold. Si un título de sección pesa como el de la
+  pantalla, el problema es que se eligió la variante de arriba.

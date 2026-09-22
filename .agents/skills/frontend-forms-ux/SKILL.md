@@ -1,11 +1,12 @@
 ---
 name: frontend-forms-ux
-description: UX de formularios — cuándo validar, errores claros y accionables por campo, preservar lo escrito ante fallo, estados de envío sin doble submit, formularios largos por pasos, autosave de borradores y accesibilidad. Usar al diseñar o revisar cualquier formulario (alta de usuario/profesional, agenda, cotización), cuando un formulario "frustra" o pierde datos, o al decidir cómo mostrar los errores de validación y del servidor.
+description: UX de formularios en Atlas (los controles concretos están en `atlas-ui-componentes`) — cuándo validar, errores claros y accionables por campo, preservar lo escrito ante fallo, estados de envío sin doble submit, formularios largos por pasos, autosave de borradores y accesibilidad. Usar al diseñar o revisar cualquier formulario de Atlas (el alta del cliente, el alta de comercio, las pantallas del ERP), cuando un formulario "frustra" o pierde datos, o al decidir cómo mostrar los errores de validación y del servidor.
 ---
 
 # UX de formularios
 
-La mecánica (tipado, validadores, mapeo de errores) la fija el framework del repo. Acá va la
+Los controles concretos —`Field`, `IconField`, `SelectField`, `PinField`, `ConsentRow`— están en
+`atlas-ui-componentes`. Acá va la
 experiencia: que el usuario complete el formulario rápido, entienda los errores y no pierda lo
 que escribió. Un formulario mal resuelto es donde más se cae la conversión.
 
@@ -13,7 +14,8 @@ que escribió. Un formulario mal resuelto es donde más se cae la conversión.
 
 - No grites errores mientras el usuario todavía está escribiendo un campo por primera vez.
   Validá **al salir del campo** (`blur`) para el primer error, y a partir de ahí en cada cambio.
-  En la librería de formularios del repo, ese es el modo de validación `onBlur` / `onTouched`.
+  En la app del cliente, el error de un campo sólo se pinta cuando ya tiene algo escrito
+  (`error={form.phone ? errors.phone : null}`): un formulario recién abierto no está mal relleno.
 - La validación de éxito puede mostrarse en vivo (p.ej. "usuario disponible") si ayuda.
 - No deshabilites el botón de enviar de entrada: dejá que el usuario intente y mostrá qué falta
   (un botón gris sin explicación confunde). Alternativa válida: habilitado + resumen de errores al enviar.
@@ -72,3 +74,21 @@ que escribió. Un formulario mal resuelto es donde más se cae la conversión.
 - [ ] Botón con estado de carga y sin doble submit (UI + idempotencia).
 - [ ] Formularios largos por pasos con progreso y vuelta atrás.
 - [ ] Labels, `aria-invalid`/`aria-describedby`, `inputmode`/`autocomplete`, error no solo por color.
+
+## En Atlas
+
+- **Los controles ya están hechos**: `Field`, `IconField`, `AmountField`, `DateField`, `SelectField`,
+  `PhoneField`, `PinField`, `OptionGroup`, `CheckRow`, `ConsentRow` (app) y los de `components/ui`
+  (portales). Ver `atlas-ui-componentes`.
+- **El error de un campo sólo aparece cuando ya hay algo escrito.** Un formulario recién abierto no
+  está mal relleno.
+- **El motivo de un botón bloqueado va debajo del botón**, no dentro: dentro obligaría a que la
+  etiqueta cambiara de longitud y el botón diera un salto cada vez que se completa un campo. Y va en
+  tono de instrucción, no de alarma.
+- **El fallo se pinta arriba y el botón está abajo**: hay que llevar la vista hasta él
+  (`useScrollToError`).
+- **Formularios largos por pasos**: el alta del cliente son ocho, con `StepHeader` («Paso 3 de 8» y
+  la barra). El número y la barra no dicen lo mismo: uno se lee, la otra se ve.
+- **Nada de placeholders con la forma exacta del valor** sin diferenciarlos: `text.placeholder` es
+  más apagado que el resto justo porque `1996-04-12` en gris de dato hace que el campo se lea como
+  relleno ya escrito.

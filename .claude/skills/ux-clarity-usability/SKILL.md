@@ -82,3 +82,17 @@ El mejor error es el que no ocurre:
 - [ ] Errores prevenidos donde se puede; lo destructivo se confirma, lo reversible se deshace.
 - [ ] Lenguaje del usuario, consistente en todo el producto.
 - [ ] Pasé las 10 heurísticas de Nielsen sobre el flujo real.
+
+## En Atlas
+
+- **Se escribe en lenguaje de usuario**, sobre todo en el ERP: nada de «backend», nombres de
+  endpoint ni cajas «se asigna al guardar». Las validaciones del servidor se traducen antes de
+  enseñarlas.
+- **Una sola ayuda por cabecera** («¿Qué es esto?», «Más» y la acción) y el ⓘ junto al rótulo de
+  cada campo y de cada opción, no en los filtros.
+- **Un botón apagado dice por qué**, y lo dice como instrucción —tono secundario, símbolo de
+  información—, no como alarma. El ámbar se reserva para cuando algo sale mal de verdad.
+- **Reconocer en vez de recordar**: los códigos y correlativos los propone el sistema, y los
+  desplegables traen el detalle de cada opción.
+- **Nunca afirmar en pasado algo que no ha ocurrido.** La pantalla de verificación decía «Te
+  enviamos un código» sin haber pedido ninguno, y ahí se paraba el alta entera.

@@ -90,7 +90,7 @@ Las custom properties son la implementación natural porque son dinámicas en ru
   sean predecibles en toda la paleta.
 - **Radio, elevación (sombra), duración de animación**: mismas reglas — escala corta y
   nombrada (`sm/md/lg/xl`), nunca valores puntuales por componente. Elevación conecta con
-  `frontend-beautiful-ui` §1; duración con `frontend-motion` §2.
+  `frontend-beautiful-ui` §1; duración con `atlas-movimiento` §3.
 
 ## 4. Diseño de API de componentes
 
@@ -155,3 +155,19 @@ Las custom properties son la implementación natural porque son dinámicas en ru
 - [ ] Catálogo de componentes (Storybook o similar) actualizado y navegable.
 - [ ] Naming de tokens igual en diseño (Figma) y en código.
 - [ ] Cambios al sistema versionados semánticamente con changelog.
+
+## En Atlas
+
+El sistema ya está montado y tiene tres capas reales; la descripción completa está en
+`atlas-diseno`. Lo imprescindible:
+
+- **Primitivos y semánticos**: `palette` → `color` en `tokens.ts` (app); `theme.css` del Motor para
+  los portales, con `tailwind.config.ts` remapeando la rampa `slate` sobre esos valores.
+- **Un gate lo mide**: `AtlasDecisionEngineFrontend/src/theme/theme-contrast.test.ts` falla si un
+  texto baja de 4,5:1 contra la peor superficie. Aclarar un gris rompe la garantía en silencio.
+- **Roles que no hay que confundir**: `surface.sunken` es un hueco donde se escribe,
+  `surface.raised` una tarjeta; `border.subtle` separa filas, `border.field` (34 %) identifica un
+  control —`subtle` en un campo lo deja en 1,3:1, por debajo del 3:1 de WCAG 1.4.11—.
+- **Theming**: en los portales, `data-theme` en la raíz escrito por un script en línea antes del
+  primer pintado.
+- **Gobernanza**: un color nuevo se decide en `theme.css`, no en el `extend` del portal que lo pide.
